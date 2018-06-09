@@ -10,6 +10,7 @@ use App\EventHandler\FooEventHandler;
 use App\EventHandler\NewIssuesEventHandler;
 use App\EventHandler\OpenedIssuesEventHandler;
 use App\EventHandler\StaleIssuesEventHandler;
+use App\EventHandler\WrikeEventHandler;
 use Http\Client\HttpAsyncClient;
 use Http\Message\MessageFactory;
 use Psr\Log\LoggerInterface;
@@ -53,6 +54,7 @@ class SampleController extends AbstractController
         $sse->addEventListener('event_gitlab_stale_issues', new StaleIssuesEventHandler());
         $sse->addEventListener('event_gitlab_all_issues', new AllIssuesEventHandler());
         $sse->addEventListener('event_gitlab_new_issues', new NewIssuesEventHandler());
+        $sse->addEventListener('event_wrike_timelog', new WrikeEventHandler());
         return $sse->createResponse();
     }
 }

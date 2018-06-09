@@ -2,6 +2,10 @@
     <div>
         <h2>Sample</h2>
         <number
+                title="Time spent"
+                more-info="wrike timelog for last 30 days"
+                v-bind:event="eventWrikeTimelog"></number>
+        <number
                 title="Opened issues"
                 more-info="# of opened issues"
                 v-bind:event="eventGitlabOpenedIssues"></number>
@@ -37,7 +41,8 @@
             eventGitlabClosedIssues: {},
             eventGitlabStaleIssues: {},
             eventGitlabAllIssues: {},
-            eventGitlabNewIssues: {}
+            eventGitlabNewIssues: {},
+            eventWrikeTimelog: {}
         }),
         mounted: function() {
             this.$nextTick(function() {
@@ -71,6 +76,11 @@
                 es.addEventListener('event_gitlab_new_issues', event => {
                     let data = JSON.parse(event.data);
                     this.eventGitlabNewIssues = data;
+                }, false);
+    
+                es.addEventListener('event_wrike_timelog', event => {
+                    let data = JSON.parse(event.data);
+                    this.eventWrikeTimelog = data;
                 }, false);
             
                 es.addEventListener('error', event => {
