@@ -44,8 +44,6 @@ class SampleController extends AbstractController
     public function events()
     {
         $sse = new SSE();
-        //$sse->addEventListener('event_foo', new FooEventHandler());
-        //$sse->addEventListener('event_bar', new BarEventHandler());
         $sse->addEventListener('event_gitlab', new OpenedIssuesEventHandler());
         return $sse->createResponse();
     }
