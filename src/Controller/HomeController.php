@@ -8,15 +8,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/sample")
+ * @Route("/")
  */
-class SampleController extends AbstractController
+class HomeController extends AbstractController
 {
     /**
-     * @Route("/events")
+     * @Route("/")
      */
-    public function events()
+    public function index(): Response
     {
-        return new Response('events');
+        return $this->render('base.html.twig');
     }
 }
