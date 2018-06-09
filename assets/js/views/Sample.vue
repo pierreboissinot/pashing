@@ -21,7 +21,6 @@
             this.$nextTick(function() {
                 this.setupStream();
             });
-            console.log(this.parentData);
         },
         methods: {
             setupStream() {
@@ -30,7 +29,6 @@
                 es.addEventListener('event_gitlab', event => {
                     let data = JSON.parse(event.data);
                     this.eventGitlabOpenedIssues = data;
-                    console.log(this.parentData);
                 }, false);
             
                 es.addEventListener('error', event => {
