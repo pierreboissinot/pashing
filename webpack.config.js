@@ -13,8 +13,6 @@ Encore
     // uncomment to define the assets of the project
     .addEntry('app', './assets/js/app.js')
     
-    .addEntry('main', './assets/js/main.js')
-    
     .enableVueLoader()
     
     // uncomment if you use Sass/SCSS files

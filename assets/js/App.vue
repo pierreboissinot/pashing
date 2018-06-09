@@ -1,5 +1,5 @@
 <template>
-    <div id="app-container">
+    <div>
         <h1>Dashboard App!</h1>
         <p>
             <!-- use router-link component for navigation. -->
@@ -14,9 +14,7 @@
 </template>
 
 <script>
-    export default {
-        name: 'app',
-    }
+
 </script>
 
 <style>
