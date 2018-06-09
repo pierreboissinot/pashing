@@ -5,6 +5,10 @@
                 title="Opened issues"
                 more-info="# of opened issues"
                 v-bind:event="eventGitlabOpenedIssues"></number>
+        <number
+                title="Closed issues"
+                more-info="# of closed issues"
+                v-bind:event="eventGitlabClosedIssues"></number>
     </div>
 </template>
 
@@ -17,7 +21,8 @@
             'number': number
         },
         data: () => ({
-            eventGitlabOpenedIssues: {}
+            eventGitlabOpenedIssues: {},
+            eventGitlabClosedIssues: {}
         }),
         mounted: function() {
             this.$nextTick(function() {
@@ -28,9 +33,14 @@
             setupStream() {
                 let es = new EventSource('/sample/events');
             
-                es.addEventListener('event_gitlab', event => {
+                es.addEventListener('event_gitlab_opened_issues', event => {
                     let data = JSON.parse(event.data);
                     this.eventGitlabOpenedIssues = data;
+                }, false);
+    
+                es.addEventListener('event_gitlab_closed_issues', event => {
+                    let data = JSON.parse(event.data);
+                    this.eventGitlabClosedIssues = data;
                 }, false);
             
                 es.addEventListener('error', event => {
