@@ -35,7 +35,6 @@ class ClosedIssuesEventHandler implements Event {
         return json_encode([
             'current' => $count,
             'status' => 'ok',
-            'id' => 'cest_pas_sorcier_opened_issues',
             'updatedAt' => time()
         ]);
     }

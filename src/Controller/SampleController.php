@@ -7,6 +7,7 @@ use App\EventHandler\BarEventHandler;
 use App\EventHandler\ClosedIssuesEventHandler;
 use App\EventHandler\FooEventHandler;
 use App\EventHandler\OpenedIssuesEventHandler;
+use App\EventHandler\StaleIssuesEventHandler;
 use Http\Client\HttpAsyncClient;
 use Http\Message\MessageFactory;
 use Psr\Log\LoggerInterface;
@@ -47,6 +48,7 @@ class SampleController extends AbstractController
         $sse = new SSE();
         $sse->addEventListener('event_gitlab_opened_issues', new OpenedIssuesEventHandler());
         $sse->addEventListener('event_gitlab_closed_issues', new ClosedIssuesEventHandler());
+        $sse->addEventListener('event_gitlab_stale_issues', new StaleIssuesEventHandler());
         return $sse->createResponse();
     }
 }
