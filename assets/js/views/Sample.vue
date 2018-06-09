@@ -13,6 +13,10 @@
                 title="Stale issues"
                 more-info="# of stale issues"
                 v-bind:event="eventGitlabStaleIssues"></number>
+        <number
+                title="All issues"
+                more-info="# of issues during last 30 days"
+                v-bind:event="eventGitlabStaleIssues"></number>
     </div>
 </template>
 
@@ -27,7 +31,8 @@
         data: () => ({
             eventGitlabOpenedIssues: {},
             eventGitlabClosedIssues: {},
-            eventGitlabStaleIssues: {}
+            eventGitlabStaleIssues: {},
+            eventGitlabAllIssues: {}
         }),
         mounted: function() {
             this.$nextTick(function() {
@@ -51,6 +56,11 @@
                 es.addEventListener('event_gitlab_stale_issues', event => {
                     let data = JSON.parse(event.data);
                     this.eventGitlabStaleIssues = data;
+                }, false);
+    
+                es.addEventListener('event_gitlab_all_issues', event => {
+                    let data = JSON.parse(event.data);
+                    this.eventGitlabAllIssues = data;
                 }, false);
             
                 es.addEventListener('error', event => {

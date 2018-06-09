@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\EventHandler\AllIssuesEventHandler;
 use App\EventHandler\BarEventHandler;
 use App\EventHandler\ClosedIssuesEventHandler;
 use App\EventHandler\FooEventHandler;
@@ -49,6 +50,7 @@ class SampleController extends AbstractController
         $sse->addEventListener('event_gitlab_opened_issues', new OpenedIssuesEventHandler());
         $sse->addEventListener('event_gitlab_closed_issues', new ClosedIssuesEventHandler());
         $sse->addEventListener('event_gitlab_stale_issues', new StaleIssuesEventHandler());
+        $sse->addEventListener('event_gitlab_all_issues', new AllIssuesEventHandler());
         return $sse->createResponse();
     }
 }
