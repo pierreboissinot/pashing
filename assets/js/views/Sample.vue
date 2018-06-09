@@ -1,18 +1,18 @@
 <template>
     <div>
         <h2>Sample</h2>
-        <text-content
-                v-bind:event="eventGitlabOpenedIssues"></text-content>
+        <number
+                v-bind:event="eventGitlabOpenedIssues"></number>
     </div>
 </template>
 
 <script>
-    import text from '../components/text'
+    import number from '../components/number'
     
     export default {
         name: 'sample',
         components: {
-            'text-content': text
+            'number': number
         },
         data: () => ({
             eventGitlabOpenedIssues: {}
