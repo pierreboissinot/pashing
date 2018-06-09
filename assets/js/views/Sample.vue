@@ -2,6 +2,8 @@
     <div>
         <h2>Sample</h2>
         <number
+                title="Opened issues"
+                more-info="# of opened issues"
                 v-bind:event="eventGitlabOpenedIssues"></number>
     </div>
 </template>

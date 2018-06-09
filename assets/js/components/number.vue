@@ -1,28 +1,56 @@
 <template>
-    <div class="easy-content">
-        <p>
-            {{ event.current }}
-        </p>
+    <div class="widget-number">
+        <h1 class="title">{{ title }}</h1>
+        
+        <h2 class="value">{{ event.current }}</h2>
+        
+        <p class="more-info">{{ moreInfo }}</p>
+        
+        <p class="updated-at"></p>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['event'],
+        props: ['event', 'title', 'moreInfo'],
     }
 </script>
 
-<style>
-    .easy-content {
-        text-align: center;
-        padding-top: 200px;
+<style scoped lang="scss">
+    $background-color:  #47bbb3;
+    $value-color:       #fff;
+    
+    $title-color:       rgba(255, 255, 255, 0.7);
+    $moreinfo-color:    rgba(255, 255, 255, 0.7);
+    
+    // ----------------------------------------------------------------------------
+    // Widget-number styles
+    // ----------------------------------------------------------------------------
+       .widget-number {
+        
+           background-color: $background-color;
+    
+    .title {
+        color: $title-color;
     }
-    .easy-content p:first-child {
-        color: #1abc9c;
-        font-size: 25px;
+    
+    .value {
+        color: $value-color;
     }
-    .easy-content p:last-child {
-        padding-top: 20px;
-        color: #bbb;
+    
+    .change-rate {
+        font-weight: 500;
+        font-size: 30px;
+        color: $value-color;
+    }
+    
+    .more-info {
+        color: $moreinfo-color;
+    }
+    
+    .updated-at {
+        color: rgba(0, 0, 0, 0.3);
+    }
+    
     }
 </style>
