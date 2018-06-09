@@ -35,7 +35,7 @@ class OpenedIssuesEventHandler implements Event {
     
     public function check(){
         //Here's the place to check when the data needs update
-        sleep(10);
+        sleep(2);
         return true;
     }
 }

@@ -1,7 +1,8 @@
 <template>
     <div>
         <h2>Sample</h2>
-        <text-content esurl="/sample/events"></text-content>
+        <text-content
+                v-bind:event="eventGitlabOpenedIssues"></text-content>
     </div>
 </template>
 
@@ -12,6 +13,33 @@
         name: 'sample',
         components: {
             'text-content': text
+        },
+        data: () => ({
+            eventGitlabOpenedIssues: {}
+        }),
+        mounted: function() {
+            this.$nextTick(function() {
+                this.setupStream();
+            });
+            console.log(this.parentData);
+        },
+        methods: {
+            setupStream() {
+                let es = new EventSource('/sample/events');
+            
+                es.addEventListener('event_gitlab', event => {
+                    let data = JSON.parse(event.data);
+                    this.eventGitlabOpenedIssues = data;
+                    console.log(this.parentData);
+                }, false);
+            
+                es.addEventListener('error', event => {
+                    if (event.readyState == EventSource.CLOSED) {
+                        console.log('Event was closed');
+                        console.log(EventSource);
+                    }
+                }, false);
+            },
         }
     }
 </script>
