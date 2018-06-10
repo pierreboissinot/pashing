@@ -1,5 +1,5 @@
 <template>
-    <div class="widget-number">
+    <div class="widget widget-number">
         <h1 class="title">{{ title }}</h1>
         
         <h2 class="value">{{ event.current }}</h2>
@@ -26,31 +26,32 @@
     // ----------------------------------------------------------------------------
     // Widget-number styles
     // ----------------------------------------------------------------------------
-       .widget-number {
-            height: 330px;
-           background-color: $background-color;
-    
-    .title {
-        color: $title-color;
-    }
-    
-    .value {
-        color: $value-color;
-    }
-    
-    .change-rate {
-        font-weight: 500;
-        font-size: 30px;
-        color: $value-color;
-    }
-    
-    .more-info {
-        color: $moreinfo-color;
-    }
-    
-    .updated-at {
-        color: rgba(0, 0, 0, 0.3);
-    }
-    
+    .widget-number {
+        
+        height: 350px;
+        background-color: $background-color;
+        
+        .title {
+            color: $title-color;
+        }
+        
+        .value {
+            color: $value-color;
+        }
+        
+        .change-rate {
+            font-weight: 500;
+            font-size: 30px;
+            color: $value-color;
+        }
+        
+        .more-info {
+            color: $moreinfo-color;
+        }
+        
+        .updated-at {
+            color: rgba(0, 0, 0, 0.3);
+        }
+        
     }
 </style>
