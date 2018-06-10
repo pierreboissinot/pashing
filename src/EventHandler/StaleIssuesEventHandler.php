@@ -41,7 +41,7 @@ class StaleIssuesEventHandler implements Event {
     
     public function check(){
         //Here's the place to check when the data needs update
-        sleep(2);
+        //sleep(2);
         return true;
     }
 }
