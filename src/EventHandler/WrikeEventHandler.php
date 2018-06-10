@@ -38,7 +38,12 @@ class WrikeEventHandler implements Event {
         foreach ($timelogs as $timelog) {
             $sum += $timelog['hours'];
         }
-        $wrikeTimeFormatted = $sum;
+    
+        //wrike_time_formatted = "#{sum.round(2).to_s.split(".")[0]}:#{((Integer(sum.round(2).to_s.split(".")[1]) / 100.0) * 60).round}"
+        $hours = intval($sum);
+        $minutes = round((($sum - $hours) / 100 * 60), 2);
+        $formatedMinutes = substr("{$minutes}",2, 2);
+        $wrikeTimeFormatted = "{$hours}:{$formatedMinutes}";
         return json_encode([
             'current' => $wrikeTimeFormatted,
             'status' => 'ok',
