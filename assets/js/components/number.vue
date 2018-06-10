@@ -6,7 +6,7 @@
         
         <p class="more-info">{{ moreInfo }}</p>
         
-        <p class="updated-at"></p>
+        <p class="updated-at">{{ new Date(event.updatedAt*1000).toLocaleTimeString() }}</p>
     </div>
 </template>
 
