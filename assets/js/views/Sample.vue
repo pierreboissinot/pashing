@@ -1,42 +1,102 @@
 <template>
     <div>
         <h2>Sample</h2>
-        <number
-                title="Time spent"
-                more-info="wrike timelog for last 30 days"
-                v-bind:event="eventWrikeTimelog"></number>
-        <number
-                title="Opened issues"
-                more-info="# of opened issues"
-                v-bind:event="eventGitlabOpenedIssues"></number>
-        <number
-                title="Closed issues"
-                more-info="# of closed issues during last 30 days"
-                v-bind:event="eventGitlabClosedIssues"></number>
-        <number
-                title="Stale issues"
-                more-info="# of stale issues"
-                v-bind:event="eventGitlabStaleIssues"></number>
-        <number
-                title="All issues"
-                more-info="# of issues during last 30 days"
-                v-bind:event="eventGitlabStaleIssues"></number>
-        <number
-                title="New issues"
-                more-info="# of created issues during last 30 days"
-                v-bind:event="eventGitlabNewIssues"></number>
+        <grid-layout
+                :layout="layout"
+                :col-num="6"
+                :row-height="350"
+                :is-draggable="true"
+                :is-resizable="true"
+                :is-mirrored="false"
+                :margin="[10, 10]"
+                :use-css-transforms="true"
+        >
+            <grid-item
+                       :x="0"
+                       :y="0"
+                       :w="1"
+                       :h="1"
+                       :i="1">
+                <number
+                        title="Time spent"
+                        more-info="wrike timelog for last 30 days"
+                        v-bind:event="eventWrikeTimelog"></number>
+            </grid-item>
+            <grid-item
+                    :x="1"
+                    :y="0"
+                    :w="1"
+                    :h="1"
+                    :i="2">
+                <number
+                        title="Opened issues"
+                        more-info="# of opened issues"
+                        v-bind:event="eventGitlabOpenedIssues"></number>
+            </grid-item>
+            <grid-item
+                    :x="2"
+                    :y="0"
+                    :w="1"
+                    :h="1"
+                    :i="3">
+                <number
+                        title="Closed issues"
+                        more-info="# of closed issues during last 30 days"
+                        v-bind:event="eventGitlabClosedIssues"></number>
+            </grid-item>
+            <grid-item
+                    :x="3"
+                    :y="0"
+                    :w="1"
+                    :h="1"
+                    :i="4">
+                <number
+                        title="Stale issues"
+                        more-info="# of stale issues"
+                        v-bind:event="eventGitlabStaleIssues"></number>
+            </grid-item>
+            <grid-item
+                    :x="4"
+                    :y="0"
+                    :w="1"
+                    :h="1"
+                    :i="5">
+                <number
+                        title="All issues"
+                        more-info="# of issues during last 30 days"
+                        v-bind:event="eventGitlabStaleIssues"></number>
+            </grid-item>
+            <grid-item
+                    :x="5"
+                    :y="0"
+                    :w="1"
+                    :h="1"
+                    :i="6">
+                <number
+                        title="New issues"
+                        more-info="# of created issues during last 30 days"
+                        v-bind:event="eventGitlabNewIssues"></number>
+            </grid-item>
+        </grid-layout>
     </div>
 </template>
 
 <script>
+    let testLayout = [
+    ];
+    
     import number from '../components/number'
+    import { GridLayout, GridItem } from 'vue-grid-layout/dist/vue-grid-layout.min'
     
     export default {
         name: 'sample',
         components: {
-            'number': number
+            'number': number,
+            GridLayout,
+            GridItem
         },
         data: () => ({
+            layout: testLayout,
             eventGitlabOpenedIssues: {},
             eventGitlabClosedIssues: {},
             eventGitlabStaleIssues: {},

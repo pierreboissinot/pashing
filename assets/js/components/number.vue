@@ -27,7 +27,7 @@
     // Widget-number styles
     // ----------------------------------------------------------------------------
        .widget-number {
-        
+            height: 330px;
            background-color: $background-color;
     
     .title {
