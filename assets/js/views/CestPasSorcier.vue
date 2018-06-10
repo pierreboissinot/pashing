@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Sample</h2>
+        <h2>C'est pas sorcier</h2>
         <grid-layout
                 :layout="layout"
                 :col-num="6"
@@ -62,17 +62,6 @@
                     :h="1"
                     :i="5">
                 <number
-                        title="All issues"
-                        more-info="# of issues during last 30 days"
-                        v-bind:event="eventGitlabStaleIssues"></number>
-            </grid-item>
-            <grid-item
-                    :x="5"
-                    :y="0"
-                    :w="1"
-                    :h="1"
-                    :i="6">
-                <number
                         title="New issues"
                         more-info="# of created issues during last 30 days"
                         v-bind:event="eventGitlabNewIssues"></number>
@@ -89,7 +78,7 @@
     import { GridLayout, GridItem } from 'vue-grid-layout/dist/vue-grid-layout.min'
     
     export default {
-        name: 'sample',
+        name: 'cest-pas-sorcier',
         components: {
             'number': number,
             GridLayout,
@@ -100,7 +89,6 @@
             eventGitlabOpenedIssues: {},
             eventGitlabClosedIssues: {},
             eventGitlabStaleIssues: {},
-            eventGitlabAllIssues: {},
             eventGitlabNewIssues: {},
             eventWrikeTimelog: {}
         }),
@@ -111,7 +99,7 @@
         },
         methods: {
             setupStream() {
-                let es = new EventSource('/sample/events');
+                let es = new EventSource('/cest-pas-sorcier/events');
             
                 es.addEventListener('event_gitlab_opened_issues', event => {
                     let data = JSON.parse(event.data);
@@ -126,11 +114,6 @@
                 es.addEventListener('event_gitlab_stale_issues', event => {
                     let data = JSON.parse(event.data);
                     this.eventGitlabStaleIssues = data;
-                }, false);
-    
-                es.addEventListener('event_gitlab_all_issues', event => {
-                    let data = JSON.parse(event.data);
-                    this.eventGitlabAllIssues = data;
                 }, false);
     
                 es.addEventListener('event_gitlab_new_issues', event => {

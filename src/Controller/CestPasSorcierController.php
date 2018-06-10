@@ -20,9 +20,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/sample")
+ * @Route("/cest-pas-sorcier")
  */
-class SampleController extends AbstractController
+class CestPasSorcierController extends AbstractController
 {
     /**
      * @var MessageFactory
@@ -52,7 +52,6 @@ class SampleController extends AbstractController
         $sse->addEventListener('event_gitlab_opened_issues', new OpenedIssuesEventHandler());
         $sse->addEventListener('event_gitlab_closed_issues', new ClosedIssuesEventHandler());
         $sse->addEventListener('event_gitlab_stale_issues', new StaleIssuesEventHandler());
-        $sse->addEventListener('event_gitlab_all_issues', new AllIssuesEventHandler());
         $sse->addEventListener('event_gitlab_new_issues', new NewIssuesEventHandler());
         $sse->addEventListener('event_wrike_timelog', new WrikeEventHandler());
         return $sse->createResponse();
