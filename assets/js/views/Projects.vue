@@ -3,8 +3,6 @@
         <h2>Projets metrics</h2>
         <project
                 v-bind:event="eventProjetA"></project>
-        <project
-                v-bind:event="eventProjetB"></project>
     </div>
 </template>
 
@@ -35,15 +33,9 @@
         methods: {
             setupStream() {
                 let es = new EventSource('/projets/events');
-            
                 es.addEventListener('event_projets_a', event => {
                     let data = JSON.parse(event.data);
                     this.eventProjetA = data;
-                }, false);
-    
-                es.addEventListener('event_projets_b', event => {
-                    let data = JSON.parse(event.data);
-                    this.eventProjetB = data;
                 }, false);
             },
         }
