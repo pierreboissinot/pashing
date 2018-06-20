@@ -31,11 +31,18 @@ class ReserveEventHandler implements Event
         $output = curl_exec($ch);
         curl_close($ch);
         $folder = json_decode($output, true)['data'][0]; // get the first folder in response
-        $budget = $this->getBudget($folder['customFields']);
+        $budgetDetails = $this->getBudgetDetails($folder['customFields']);
+        $costDetails = $this->getCostdetails($this->folderId);
         return json_encode([
             'title' => $folder['title'],
-            'budget' => $budget,
-            'reserve' => $budget - $this->getCost($this->folderId),
+            'budget' => $budgetDetails['total'],
+            'budgetPilotage' => $budgetDetails['pilotage'],
+            'budgetConception' => $budgetDetails['conception'],
+            'budgetRealisation' => $budgetDetails['realisation'],
+            'reserve' => $budgetDetails['total'] - $costDetails['total'],
+            'pilotage' => $costDetails['pilotage'],
+            'conception' => $costDetails['conception'],
+            'realisation' => $costDetails['realisation'],
             'status' => 'ok',
             'updatedAt' => time(),
         ]);
@@ -47,29 +54,41 @@ class ReserveEventHandler implements Event
         return true;
     }
     
-    private function getBudget(array $customFields): int
+    private function getBudgetDetails(array $customFields): array
     {
         $budget = 0;
+        $pilotageBudget = 0;
+        $conceptionBudget = 0;
+        $realisationBudget = 0;
         foreach ($customFields as $customField) {
             $stringValue = $customField['value'];
             // TODO: manage minutes
             $hours = (int) substr($stringValue, 0, 2);
             switch ($customField['id']){
                 case getenv('WRIKE_CUSTOM_FIELD_CONCEPTION'):
-                    $budget += $hours * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
+                    $conceptionBudget += $hours * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
                     break;
                 case getenv('WRIKE_CUSTOM_FIELD_REALISATION'):
-                    $budget += $hours * eval('return '.getenv('REALISATION_HOUR_COST').';');
+                    $realisationBudget += $hours * eval('return '.getenv('REALISATION_HOUR_COST').';');
                     break;
                 case getenv('WRIKE_CUSTOM_FIELD_PILOTAGE'):
-                    $budget += $hours * eval('return '.getenv('PILOTAGE_HOUR_COST').';');
+                    $pilotageBudget += $hours * eval('return '.getenv('PILOTAGE_HOUR_COST').';');
                     break;
+                    //TODO: add default
             }
         }
-        return intval($budget);
+        
+        $budget += $pilotageBudget + $conceptionBudget + $realisationBudget;
+        
+        return [
+            'total' => intval($budget),
+            'pilotage' => intval($pilotageBudget),
+            'conception' => intval($conceptionBudget),
+            'realisation' => intval($realisationBudget),
+        ];
     }
     
-    private function getCost($folderId): int
+    private function getCostDetails($folderId): array
     {
         $wrikeUrl = getenv('WRIKE_URL');
         $token = getenv('WRIKE_PERMANENT_TOKEN');
@@ -87,23 +106,31 @@ class ReserveEventHandler implements Event
         curl_close($ch);
         $timelogs = json_decode($output, true)['data'];
         $sum = 0;
+        $pilotageSum = 0;
+        $conceptionSum = 0;
+        $realisationSum = 0;
         foreach ($timelogs as $timelog) {
-            if (!in_array('categoryId', $timelog)) {
-                break;
-            }
             switch ($timelog['categoryId']){
                 case getenv('WRIKE_CATEGORY_ID_CONCEPTION'):
-                    $sum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
+                    $conceptionSum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
                     break;
                 case getenv('WRIKE_CATEGORY_ID_REALISATION'):
-                    $sum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
+                    $realisationSum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
                     break;
                 case getenv('WRIKE_CATEGORY_ID_PILOTAGE'):
-                    $sum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
+                    $pilotageSum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
                     break;
+                    // TODO: add default
             }
         }
         
-        return intval($sum);
+        $sum += $pilotageSum + $conceptionSum + $realisationSum;
+        
+        return [
+            'total' => intval($sum),
+            'pilotage' => intval($pilotageSum),
+            'conception' => intval($conceptionSum),
+            'realisation' => intval($realisationSum),
+        ];
     }
 }
