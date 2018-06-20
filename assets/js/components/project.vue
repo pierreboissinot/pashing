@@ -4,13 +4,80 @@
     
         <div class="wrapper">
             <div class="column-one">
-                <h2 class="reserve">{{ event.reserve }} € HT</h2>
-                <p>réserve</p>
-                
-                <p class="budget">budget: {{ event.budget }} € HT</p>
-                {{ event.pilotage }} / {{ event.budgetPilotage }}
-                {{ event.conception }} / {{ event.budgetConception}}
-                {{ event.realisation }} / {{ event.budgetRealisation }}
+                <div class="main-infos">
+                    <h2 class="reserve">{{ event.reserve }} € HT</h2>
+                    <p>réserve</p>
+                    
+                    <p class="budget">budget: {{ event.budget }} € HT</p>
+                </div>
+                <div class="categories">
+                    <canvas data-type="radial-gauge"
+                            data-width="150"
+                            data-height="150"
+                            data-units="€"
+                            data-min-value="0"
+                            data-start-angle="90"
+                            data-ticks-angle="180"
+                            data-value-box="true"
+                            v-bind:data-max-value="event.budgetPilotage"
+                            v-bind:data-value="event.pilotage"
+                            v-bind:data-major-ticks="'0,' + event.budgetPilotage/4 + ',' + event.budgetPilotage/2 + ',' + event.budgetPilotage/4*3 + ',' + event.budgetPilotage"
+                            data-stroke-ticks="true"
+                            data-color-plate="#fff"
+                            data-border-shadow-width="0"
+                            data-borders="false"
+                            data-needle-type="arrow"
+                            data-needle-circle-size="7"
+                            data-needle-circle-outer="true"
+                            data-needle-circle-inner="false"
+                            data-animation-duration="1500"
+                            data-animation-rule="linear"
+                    ></canvas>
+                    <canvas data-type="radial-gauge"
+                            data-width="150"
+                            data-height="150"
+                            data-units="€"
+                            data-min-value="0"
+                            data-start-angle="90"
+                            data-ticks-angle="180"
+                            data-value-box="true"
+                            v-bind:data-max-value="event.budgetConception"
+                            v-bind:data-value="event.conception"
+                            v-bind:data-major-ticks="'0,' + event.budgetConception/4 + ',' + event.budgetConception/2 + ',' + event.budgetConception/4*3 + ',' + event.budgetConception"
+                            data-stroke-ticks="true"
+                            data-color-plate="#fff"
+                            data-border-shadow-width="0"
+                            data-borders="false"
+                            data-needle-type="arrow"
+                            data-needle-circle-size="7"
+                            data-needle-circle-outer="true"
+                            data-needle-circle-inner="false"
+                            data-animation-duration="1500"
+                            data-animation-rule="linear"
+                    ></canvas>
+                    <canvas data-type="radial-gauge"
+                        data-width="150"
+                        data-height="150"
+                        data-units="€"
+                        data-min-value="0"
+                        data-start-angle="90"
+                        data-ticks-angle="180"
+                        data-value-box="true"
+                        v-bind:data-max-value="event.budgetRealisation"
+                        v-bind:data-value="event.realisation"
+                        v-bind:data-major-ticks="'0,' + event.budgetRealisation/4 + ',' + event.budgetRealisation/2 + ',' + event.budgetRealisation/4*3 + ',' + event.budgetRealisation"
+                        data-stroke-ticks="true"
+                        data-color-plate="#fff"
+                        data-border-shadow-width="0"
+                        data-borders="false"
+                        data-needle-type="arrow"
+                        data-needle-circle-size="7"
+                        data-needle-circle-outer="true"
+                        data-needle-circle-inner="false"
+                        data-animation-duration="1500"
+                        data-animation-rule="linear"
+                ></canvas>
+                </div>
             </div>
             <div class="column-two">
                 <canvas data-type="linear-gauge"
@@ -69,6 +136,10 @@
         .column-two {
             grid-column: 2;
             grid-row: 1;
+        }
+        
+        .categories {
+            margin: 14px;
         }
         
         .title {
