@@ -1,7 +1,6 @@
 <template>
     <div class="widget widget-project">
         <h1 class="title">{{ event.title }}</h1>
-    
         <div class="wrapper">
             <div class="column-one">
                 <div class="main-infos">
