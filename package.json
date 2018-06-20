@@ -18,6 +18,7 @@
         "heroku-postbuild": "encore production"
     },
     "dependencies": {
+        "canvas-gauges": "^2.1.5",
         "d3": "^5.5.0",
         "vue-grid-layout": "^2.1.13",
         "vue-router": "^3.0.1"

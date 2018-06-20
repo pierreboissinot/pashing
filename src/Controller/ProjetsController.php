@@ -20,7 +20,6 @@ class ProjetsController extends AbstractController
     {
         $sse = new SSE();
         $sse->addEventListener('event_projets_a', new ReserveEventHandler(getenv('WRIKE_PROJECT_A')));
-        $sse->addEventListener('event_projets_b', new ReserveEventHandler(getenv('WRIKE_PROJECT_B')));
         return $sse->createResponse();
     }
 }
