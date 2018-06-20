@@ -74,7 +74,9 @@ class ReserveEventHandler implements Event
                 case getenv('WRIKE_CUSTOM_FIELD_PILOTAGE'):
                     $pilotageBudget += $hours * eval('return '.getenv('PILOTAGE_HOUR_COST').';');
                     break;
-                    //TODO: add default
+                default:
+                    $budget += $hours * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
+                    break;
             }
         }
         
@@ -120,7 +122,9 @@ class ReserveEventHandler implements Event
                 case getenv('WRIKE_CATEGORY_ID_PILOTAGE'):
                     $pilotageSum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
                     break;
-                    // TODO: add default
+                default:
+                    $sum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
+                    break;
             }
         }
         
