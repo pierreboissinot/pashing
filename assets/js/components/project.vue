@@ -11,6 +11,7 @@
                 </div>
                 <div class="categories">
                     <canvas data-type="radial-gauge"
+                            data-title="Pilotage"
                             data-width="150"
                             data-height="150"
                             data-units="€"
@@ -33,6 +34,7 @@
                             data-animation-rule="linear"
                     ></canvas>
                     <canvas data-type="radial-gauge"
+                            data-title="Conception"
                             data-width="150"
                             data-height="150"
                             data-units="€"
@@ -55,6 +57,7 @@
                             data-animation-rule="linear"
                     ></canvas>
                     <canvas data-type="radial-gauge"
+                            data-title="Réalisation"
                         data-width="150"
                         data-height="150"
                         data-units="€"
