@@ -8,6 +8,9 @@
                 <p>réserve</p>
                 
                 <p class="budget">budget: {{ event.budget }} € HT</p>
+                {{ event.pilotage }} / {{ event.budgetPilotage }}
+                {{ event.conception }} / {{ event.budgetConception}}
+                {{ event.realisation }} / {{ event.budgetRealisation }}
             </div>
             <div class="column-two">
                 <canvas data-type="linear-gauge"
