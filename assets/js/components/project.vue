@@ -1,6 +1,6 @@
 <template>
     <div class="widget widget-project">
-        <h1 class="title">{{ event.title }}</h1>
+        <h1 class="title">{{ title }}</h1>
         <div class="wrapper">
             <div class="column-one">
                 <div class="main-infos">
@@ -42,6 +42,7 @@
                     ></knob-control>
                 </div>
             </div>
+            <!--
             <div class="column-two">
                 <canvas data-type="linear-gauge"
                         v-bind:data-value="event.reserve"
@@ -63,6 +64,7 @@
                         v-bind:data-major-ticks="'0, '+ event.budget/4 + ',' + event.budget/4*2 + ',' + event.budget/4*3 + ',' + event.budget"
                 ></canvas>
             </div>
+            -->
         </div>
         <p class="updated-at">{{ new Date(event.updatedAt*1000).toLocaleTimeString() }}</p>
     </div>
@@ -83,6 +85,9 @@
             }
         },
         computed: {
+            title: function () {
+                return undefined !== this.event.title ? this.event.title.substring(0, 29) + '.' : 'title';
+            },
             reserve: function () {
                 let moneyFormat = wNumb({
                     mark: '.',
