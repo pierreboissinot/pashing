@@ -4,10 +4,10 @@
         <div class="wrapper">
             <div class="column-one">
                 <div class="main-infos">
-                    <h2 class="reserve">{{ event.reserve }} € HT</h2>
+                    <h2 class="reserve">{{ reserve }}</h2>
                     <p>réserve</p>
                     
-                    <p class="budget">budget: {{ event.budget }} € HT</p>
+                    <p class="budget">budget: {{ budget }}</p>
                 </div>
                 <div class="categories">
                     <knob-control class="dial"
@@ -67,7 +67,8 @@
 
 <script>
     import 'canvas-gauges/gauge.min';
-    import VueKnobControl from 'vue-knob-control'
+    import VueKnobControl from 'vue-knob-control';
+    import wNumb from 'wnumb';
     export default {
         props: ['event'],
         components: {
@@ -76,6 +77,24 @@
         data: {
             event: {
                 pilotage: 0
+            }
+        },
+        computed: {
+            reserve: function () {
+                let moneyFormat = wNumb({
+                    mark: '.',
+                    thousand: ' ',
+                    suffix: ' € HT'
+                });
+                return moneyFormat.to(this.event.reserve);
+            },
+            budget: function () {
+                let moneyFormat = wNumb({
+                    mark: '.',
+                    thousand: ' ',
+                    suffix: ' € HT'
+                });
+                return moneyFormat.to(this.event.budget);
             }
         }
     }
