@@ -18,6 +18,7 @@
                                   text-color="#fff"
                                   primary-color="#FFFC19"
                                   secondary-color="#fff"
+                                  title="'Pilotage'"
                     ></knob-control>
                     <knob-control class="dial"
                                   :value="event.conception"
@@ -27,6 +28,7 @@
                                   text-color="#fff"
                                   primary-color="#FF0000"
                                   secondary-color="#fff"
+                                  title="Conception"
                     ></knob-control>
                     <knob-control class="dial"
                                   :value="event.realisation"
@@ -36,6 +38,7 @@
                                   text-color="#fff"
                                   primary-color="#1485CC"
                                   secondary-color="#fff"
+                                  title="Réalisation"
                     ></knob-control>
                 </div>
             </div>
@@ -50,7 +53,7 @@
                         data-needle-side="right"
                         data-borders="false"
                         data-bar-begin-circle="false"
-                        data-stroke-ticks="true"
+                        data-stroke-ticks="false"
                         data-width="150"
                         data-height="300"
                         data-color-plate="#009bbb"
