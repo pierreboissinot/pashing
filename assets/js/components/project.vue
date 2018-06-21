@@ -15,18 +15,27 @@
                                   :max="event.budgetPilotage"
                                   :min="0"
                                   :size="100"
+                                  text-color="#fff"
+                                  primary-color="#FFFC19"
+                                  secondary-color="#fff"
                     ></knob-control>
                     <knob-control class="dial"
                                   :value="event.conception"
                                   :max="event.budgetConception"
                                   :min="0"
                                   :size="100"
+                                  text-color="#fff"
+                                  primary-color="#FF0000"
+                                  secondary-color="#fff"
                     ></knob-control>
                     <knob-control class="dial"
                                   :value="event.realisation"
                                   :max="event.budgetRealisation"
                                   :min="0"
                                   :size="100"
+                                  text-color="#fff"
+                                  primary-color="#1485CC"
+                                  secondary-color="#fff"
                     ></knob-control>
                 </div>
             </div>
