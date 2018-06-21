@@ -112,19 +112,23 @@ class ReserveEventHandler implements Event
         $conceptionSum = 0;
         $realisationSum = 0;
         foreach ($timelogs as $timelog) {
-            switch ($timelog['categoryId']){
-                case getenv('WRIKE_CATEGORY_ID_CONCEPTION'):
-                    $conceptionSum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
-                    break;
-                case getenv('WRIKE_CATEGORY_ID_REALISATION'):
-                    $realisationSum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
-                    break;
-                case getenv('WRIKE_CATEGORY_ID_PILOTAGE'):
-                    $pilotageSum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
-                    break;
-                default:
-                    $sum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
-                    break;
+            if(isset($timelog['categoryId'])) {
+                switch ($timelog['categoryId']){
+                    case getenv('WRIKE_CATEGORY_ID_CONCEPTION'):
+                        $conceptionSum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
+                        break;
+                    case getenv('WRIKE_CATEGORY_ID_REALISATION'):
+                        $realisationSum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
+                        break;
+                    case getenv('WRIKE_CATEGORY_ID_PILOTAGE'):
+                        $pilotageSum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
+                        break;
+                    default:
+                        $sum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
+                        break;
+                }
+            } else {
+                $sum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
             }
         }
         
