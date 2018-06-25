@@ -6,7 +6,7 @@ Simple realtime dashboard.
 
 Inspired by [Dashing](https://github.com/Shopify/dashing), a great tool to create dashboards.
 
-This project goal is to offer the samle features as Dashing but in a different technic stack:
+This project goal is to offer the same features as Dashing but in a different technic stack:
 * Sinatra => Symfony
 * Batman.js => VueJs
 
