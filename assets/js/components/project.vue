@@ -4,8 +4,8 @@
         <div class="wrapper">
             <div class="column-one">
                 <div class="main-infos">
-                    <h2 class="reserve">{{ reserve }}</h2>
                     <p>réserve</p>
+                    <h2 class="reserve">{{ reserve }}</h2>
                     
                     <p class="budget">budget: {{ budget }}</p>
                 </div>
