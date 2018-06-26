@@ -1,5 +1,5 @@
 <template>
-    <div class="widget widget-project">
+    <div class="widget widget-project" v-bind:class="classStatus">
         <h1 class="title">{{ title }}</h1>
         <div class="wrapper">
             <div class="column-one">
@@ -103,13 +103,19 @@
                     suffix: ' € HT'
                 });
                 return moneyFormat.to(this.event.budget);
+            },
+            classStatus: function () {
+                return {
+                    'danger': this.event.reserve < 0,
+                    'warning': 0 === this.event.reserve,
+                    'success': this.event.reserve > 0
+                }
             }
         }
     }
 </script>
 
 <style scoped lang="scss">
-    $background-color: #009bbb;
     $value-color:       #fff;
     
     $title-color:       rgba(255, 255, 255, 0.7);
@@ -121,7 +127,6 @@
     .widget-project {
         
         height: 350px;
-        background-color: $background-color;
         
         .wrapper {
             display: grid;
@@ -161,5 +166,16 @@
             color: rgba(0, 0, 0, 0.3);
         }
         
+    }
+    .danger {
+        background-color: red;
+    }
+
+    .warning {
+        background-color: orange;
+    }
+
+    .success {
+        background-color: green;
     }
 </style>
