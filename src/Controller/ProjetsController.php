@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\EventHandler\ReserveEventHandler;
 use Sse\SSE;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,6 +28,7 @@ class ProjetsController extends AbstractController
         $sse->addEventListener('event_projets_h', new ReserveEventHandler(getenv('WRIKE_PROJECT_H')));
         $sse->addEventListener('event_projets_i', new ReserveEventHandler(getenv('WRIKE_PROJECT_I')));
         $sse->addEventListener('event_projets_j', new ReserveEventHandler(getenv('WRIKE_PROJECT_J')));
+
         return $sse->createResponse();
     }
 }

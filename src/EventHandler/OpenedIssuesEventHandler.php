@@ -2,15 +2,12 @@
 
 namespace App\EventHandler;
 
-
-use Http\Client\HttpAsyncClient;
-use Http\Message\MessageFactory;
-use Psr\Log\LoggerInterface;
 use Sse\Event;
 
-class OpenedIssuesEventHandler implements Event {
-    
-    public function update(){
+class OpenedIssuesEventHandler implements Event
+{
+    public function update()
+    {
         //Here's the place to send data
         $url = getenv('GITLAB_URL');
         $privateToken = getenv('GITLAB_PRIVATE_TOKEN');
@@ -23,16 +20,18 @@ class OpenedIssuesEventHandler implements Event {
         $output = curl_exec($ch);
         // close curl resource to free up system resources
         curl_close($ch);
-    
+
         $count = count(json_decode($output));
+
         return json_encode([
             'current' => $count,
             'status' => 'ok',
-            'updatedAt' => time()
+            'updatedAt' => time(),
         ]);
     }
-    
-    public function check(){
+
+    public function check()
+    {
         //Here's the place to check when the data needs update
         //sleep(2);
         return true;
