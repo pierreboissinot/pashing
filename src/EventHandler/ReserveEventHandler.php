@@ -2,7 +2,6 @@
 
 namespace App\EventHandler;
 
-
 use Sse\Event;
 
 class ReserveEventHandler implements Event
@@ -11,17 +10,17 @@ class ReserveEventHandler implements Event
      * @var string
      */
     private $folderId;
-    
+
     public function __construct(string $folderId)
     {
         $this->folderId = $folderId;
     }
-    
+
     public function update()
     {
         $wrikeUrl = getenv('WRIKE_URL');
         $token = getenv('WRIKE_PERMANENT_TOKEN');
-        
+
         $ch = curl_init("$wrikeUrl/api/v3/folders/{$this->folderId}");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -33,6 +32,7 @@ class ReserveEventHandler implements Event
         $folder = json_decode($output, true)['data'][0]; // get the first folder in response
         $budgetDetails = $this->getBudgetDetails($folder['customFields']);
         $costDetails = $this->getCostdetails($this->folderId);
+
         return json_encode([
             'title' => $folder['title'],
             'budget' => $budgetDetails['total'],
@@ -46,14 +46,13 @@ class ReserveEventHandler implements Event
             'status' => 'ok',
             'updatedAt' => time(),
         ]);
-        
     }
-    
+
     public function check()
     {
         return true;
     }
-    
+
     private function getBudgetDetails(array $customFields): array
     {
         $budget = 0;
@@ -64,7 +63,7 @@ class ReserveEventHandler implements Event
             $stringValue = $customField['value'];
             // TODO: manage minutes
             $hours = (int) substr($stringValue, 0, 2);
-            switch ($customField['id']){
+            switch ($customField['id']) {
                 case getenv('WRIKE_CUSTOM_FIELD_CONCEPTION'):
                     $conceptionBudget += $hours * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
                     break;
@@ -79,17 +78,17 @@ class ReserveEventHandler implements Event
                     break;
             }
         }
-        
+
         $budget += $pilotageBudget + $conceptionBudget + $realisationBudget;
-        
+
         return [
-            'total' => intval($budget),
-            'pilotage' => intval($pilotageBudget),
-            'conception' => intval($conceptionBudget),
-            'realisation' => intval($realisationBudget),
+            'total' => (int) $budget,
+            'pilotage' => (int) $pilotageBudget,
+            'conception' => (int) $conceptionBudget,
+            'realisation' => (int) $realisationBudget,
         ];
     }
-    
+
     private function getCostDetails($folderId): array
     {
         $wrikeUrl = getenv('WRIKE_URL');
@@ -98,10 +97,10 @@ class ReserveEventHandler implements Event
         curl_setopt($ch, CURLOPT_URL, "$wrikeUrl/api/v3/folders/${folderId}/timelogs");
         //return the transfer as a string
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "Authorization: Bearer {$token}",
-            'Content-Type: application/json'
-        ));
+            'Content-Type: application/json',
+        ]);
         // $output contains the output string
         $output = curl_exec($ch);
         // close curl resource to free up system resources
@@ -112,8 +111,8 @@ class ReserveEventHandler implements Event
         $conceptionSum = 0;
         $realisationSum = 0;
         foreach ($timelogs as $timelog) {
-            if(isset($timelog['categoryId'])) {
-                switch ($timelog['categoryId']){
+            if (isset($timelog['categoryId'])) {
+                switch ($timelog['categoryId']) {
                     case getenv('WRIKE_CATEGORY_ID_CONCEPTION'):
                         $conceptionSum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
                         break;
@@ -131,14 +130,14 @@ class ReserveEventHandler implements Event
                 $sum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
             }
         }
-        
+
         $sum += $pilotageSum + $conceptionSum + $realisationSum;
-        
+
         return [
-            'total' => intval($sum),
-            'pilotage' => intval($pilotageSum),
-            'conception' => intval($conceptionSum),
-            'realisation' => intval($realisationSum),
+            'total' => (int) $sum,
+            'pilotage' => (int) $pilotageSum,
+            'conception' => (int) $conceptionSum,
+            'realisation' => (int) $realisationSum,
         ];
     }
 }
