@@ -42,29 +42,36 @@
                     ></knob-control>
                 </div>
             </div>
-            <!--
             <div class="column-two">
                 <canvas data-type="linear-gauge"
                         v-bind:data-value="event.reserve"
                         data-min-value="0"
                         v-bind:data-max-value="event.budget"
-                        data-units="€"
+                        data-units=""
                         data-tick-side="right"
+                        data-ticks-width="0"
                         data-number-side="right"
-                        data-needle-side="right"
                         data-borders="false"
                         data-bar-begin-circle="false"
                         data-stroke-ticks="false"
                         data-width="150"
                         data-height="300"
-                        data-color-plate="#009bbb"
-                        data-color-numbers="#fff"
                         data-color-units="#fff"
                         data-value-box="false"
-                        v-bind:data-major-ticks="'0, '+ event.budget/4 + ',' + event.budget/4*2 + ',' + event.budget/4*3 + ',' + event.budget"
+                        data-bar-stroke-width="0"
+                        data-bar-stroke-progress="false"
+                        data-major-ticks=""
+                        data-minor-ticks=""
+                        data-needle="false"
+                        data-needle-width="0"
+                        data-color-plate="rgba(255, 255, 255, 0)"
+                        data-color-numbers="rgba(255, 255, 255, 0)"
+                        data-color-bar-stroke="rgba(255, 255, 255, 0)"
+                        data-color-stroke-ticks="rgba(255, 255, 255, 0)"
+                        data-color-bar="#4ecdc4"
+                        data-color-bar-progress="#1a535c"
                 ></canvas>
             </div>
-            -->
         </div>
         <p class="updated-at">{{ new Date(event.updatedAt*1000).toLocaleTimeString() }}</p>
     </div>
