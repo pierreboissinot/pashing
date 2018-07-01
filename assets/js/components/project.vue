@@ -4,19 +4,19 @@
         <div class="wrapper">
             <div class="column-one">
                 <div class="main-infos">
-                    <p>réserve</p>
+                    <p>Budget restant</p>
                     <h2 class="reserve">{{ reserve }}</h2>
                     
-                    <p class="budget">budget: {{ budget }}</p>
+                    <p class="budget">Budget initial: {{ budget }}</p>
                 </div>
                 <div class="categories">
                     <knob-control class="dial"
                                   :value="event.pilotage"
                                   :max="event.budgetPilotage"
                                   :min="0"
-                                  :size="100"
-                                  text-color="#fff"
-                                  primary-color="#FFFC19"
+                                  :size="50"
+                                  text-color="#000"
+                                  primary-color="#ffe66d"
                                   secondary-color="#fff"
                                   title="'Pilotage'"
                     ></knob-control>
@@ -24,9 +24,9 @@
                                   :value="event.conception"
                                   :max="event.budgetConception"
                                   :min="0"
-                                  :size="100"
-                                  text-color="#fff"
-                                  primary-color="#FF0000"
+                                  :size="50"
+                                  text-color="#000"
+                                  primary-color="#ffe66d"
                                   secondary-color="#fff"
                                   title="Conception"
                     ></knob-control>
@@ -34,12 +34,13 @@
                                   :value="event.realisation"
                                   :max="event.budgetRealisation"
                                   :min="0"
-                                  :size="100"
-                                  text-color="#fff"
-                                  primary-color="#1485CC"
+                                  :size="50"
+                                  text-color="#000"
+                                  primary-color="#ffe66d"
                                   secondary-color="#fff"
                                   title="Réalisation"
                     ></knob-control>
+                    <div id="detailed-legend"><p>Temps passé / Temps vendu</p></div>
                 </div>
             </div>
             <div class="column-two">
@@ -123,10 +124,10 @@
 </script>
 
 <style scoped lang="scss">
-    $value-color:       #fff;
+    $value-color: #000;
     
-    $title-color:       rgba(255, 255, 255, 0.7);
-    $moreinfo-color:    rgba(255, 255, 255, 0.7);
+    $title-color: rgba(75, 75, 75, 0.7);
+    $moreinfo-color: rgba(75, 75, 75, 0.7);
     
     // ----------------------------------------------------------------------------
     // Widget-number styles
@@ -142,6 +143,7 @@
         .column-one {
             grid-column: 1;
             grid-row: 1;
+            padding-top: 45px;
         }
         
         .column-two {
@@ -163,19 +165,31 @@
         
         .reserve {
             color: $value-color;
+            font-size: 50px;
         }
         
         .budget {
             color: $moreinfo-color;
         }
         
+        .main-infos {
+            color: $value-color;
+        }
+        
         .updated-at {
             color: rgba(0, 0, 0, 0.3);
         }
         
+        #detailed-legend {
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
     }
     .danger {
-        background-color: red;
+        background-color: #ff6b6b;
     }
 
     .warning {
@@ -183,6 +197,6 @@
     }
 
     .success {
-        background-color: green;
+        background-color: #f7fff7;
     }
 </style>
