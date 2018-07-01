@@ -49,8 +49,8 @@
                     ></knob-control>
                         <p class="text-center text-legend">Pilotage</p>
                     </div>
-                    <div id="detailed-legend"><p>Temps passé / Temps vendu</p></div>
                 </div>
+                <div id="detailed-legend"><p>Temps passé / Temps vendu</p></div>
             </div>
             <div class="column-two">
                 <canvas data-type="linear-gauge"
