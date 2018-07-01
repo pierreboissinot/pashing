@@ -142,6 +142,7 @@
     // Widget-number styles
     // ----------------------------------------------------------------------------
     .widget-project {
+        color: black;
         
         .text-center {
             text-align: center;
