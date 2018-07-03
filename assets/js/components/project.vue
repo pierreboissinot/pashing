@@ -64,8 +64,8 @@
                         data-borders="false"
                         data-bar-begin-circle="false"
                         data-stroke-ticks="false"
-                        data-width="150"
-                        data-height="300"
+                        data-width="50"
+                        data-height="200"
                         data-color-units="#fff"
                         data-value-box="false"
                         data-bar-stroke-width="0"
@@ -152,7 +152,6 @@
             font-size: 8px;
         }
         
-        height: 350px;
         
         .wrapper {
             display: grid;
@@ -161,7 +160,6 @@
         .column-one {
             grid-column: 1;
             grid-row: 1;
-            padding-top: 45px;
         }
         
         .column-two {
