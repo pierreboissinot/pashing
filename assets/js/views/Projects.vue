@@ -1,107 +1,15 @@
 <template>
     <div>
-        <grid-layout
-                :layout="layout"
-                :col-num="4"
-                :row-height="350"
-                :is-draggable="true"
-                :is-resizable="true"
-                :is-mirrored="false"
-                :margin="[10, 10]"
-                :use-css-transforms="true">
-            <grid-item
-                    :x="0"
-                    :y="0"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetA"></project>
-            </grid-item>
-            <grid-item
-                    :x="1"
-                    :y="0"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetB"></project>
-            </grid-item>
-            <grid-item
-                    :x="2"
-                    :y="0"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetC"></project>
-            </grid-item>
-            <grid-item
-                    :x="3"
-                    :y="0"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetD"></project>
-            </grid-item>
-            <grid-item
-                    :x="0"
-                    :y="1"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetE"></project>
-            </grid-item>
-            <grid-item
-                    :x="1"
-                    :y="1"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetF"></project>
-            </grid-item>
-            <grid-item
-                    :x="2"
-                    :y="1"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetG"></project>
-            </grid-item>
-            <grid-item
-                    :x="3"
-                    :y="1"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetH"></project>
-            </grid-item>
-            <grid-item
-                    :x="0"
-                    :y="2"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetI"></project>
-            </grid-item>
-            <grid-item
-                    :x="1"
-                    :y="2"
-                    :w="1"
-                    :h="1"
-                    :i="1">
-                <project :event="eventProjetJ"></project>
-            </grid-item>
-            <grid-item
-                    :x="2"
-                    :y="2"
-                    :w="1"
-                    :h="1"
-                    :i="1"></grid-item>
-            <grid-item
-                    :x="3"
-                    :y="2"
-                    :w="1"
-                    :h="1"
-                    :i="1"></grid-item>
-        </grid-layout>
+        <project :event="eventProjetA"></project>
+        <project :event="eventProjetB"></project>
+        <project :event="eventProjetC"></project>
+        <project :event="eventProjetD"></project>
+        <project :event="eventProjetE"></project>
+        <project :event="eventProjetF"></project>
+        <project :event="eventProjetG"></project>
+        <project :event="eventProjetH"></project>
+        <project :event="eventProjetI"></project>
+        <project :event="eventProjetJ"></project>
     </div>
 </template>
 
