@@ -44,6 +44,18 @@ class ProjetsController extends AbstractController
 
         return $sse->createResponse();
     }
+    
+    /**
+     * @Route("/{id}/metrics")
+     *
+     * @param string $id
+     *
+     * @return JsonResponse
+     */
+    public function projectMetrics(string $id)
+    {
+        return new JsonResponse($this->wrike->getFolderMetrics($id));
+    }
 
     /**
      * @return JsonResponse

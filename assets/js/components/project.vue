@@ -61,9 +61,10 @@
 
 <script>
     import ProgressBar from 'progressbar.js';
-    
     import VueKnobControl from 'vue-knob-control';
     import wNumb from 'wnumb';
+    import axios from 'axios';
+    
     export default {
         props: [ 'projectId', 'eventSource'],
         components: {
@@ -79,33 +80,45 @@
         },
         mounted: function() {
             this.$nextTick(function() {
-                let eventType = `event_project_${this.projectId}`;
-                var reserveLine = new ProgressBar.Line(`#${this.reserveId}`, {
-                    color: '#1a535c',
-                    duration: 3000,
-                    easing: 'easeInOut',
-                    trailColor: '#4ecdc4',
-                    strokeWidth: 4,
-                    trailWidth: 1,
-                    svgStyle: {width: '100%', height: '100%'}
-                });
-                this.eventSource.addEventListener(eventType, event => {
-                    this.eventData = JSON.parse(event.data);
-                    console.log(event.data);
-    
-                    if (this.reserveValue > 0 && this.budgetValue > 0) {
-                        let reservePercent = this.eventData.reserve * 100 / this.eventData.budget;
-                        console.log('reserve', this.eventData.reserve);
-                        console.log('budget', this.eventData.budget);
-                        console.log('reservePercent', reservePercent);
-                        reserveLine.animate(reservePercent/100);
-                    } else {
-                        reserveLine.animate(0);
-                    }
-                }, false);
+                this.getMetrics();
             });
         },
         methods: {
+            getMetrics() {
+                axios.get(`/projets/${this.projectId}/metrics`)
+                    .then((response) => {
+                        this.eventData = JSON.parse(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+                    .then(() => {
+                        console.log(`/projets/${this.projectId}/metrics finished`);
+                        // Set up listener on event source
+                        let eventType = `event_project_${this.projectId}`;
+                        var reserveLine = new ProgressBar.Line(`#${this.reserveId}`, {
+                            color: '#1a535c',
+                            duration: 3000,
+                            easing: 'easeInOut',
+                            trailColor: '#4ecdc4',
+                            strokeWidth: 4,
+                            trailWidth: 1,
+                            svgStyle: {width: '100%', height: '100%'}
+                        });
+                        console.log(`register es for ${eventType}}`);
+                        this.eventSource.addEventListener(eventType, event => {
+                            this.eventData = JSON.parse(event.data);
+                            console.log(event.data);
+        
+                            if (this.reserveValue > 0 && this.budgetValue > 0) {
+                                let reservePercent = this.eventData.reserve * 100 / this.eventData.budget;
+                                reserveLine.animate(reservePercent/100);
+                            } else {
+                                reserveLine.animate(0);
+                            }
+                        }, false);
+                    });
+            },
         },
         computed: {
             reserveId: function () {
