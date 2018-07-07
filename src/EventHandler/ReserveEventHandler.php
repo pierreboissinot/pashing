@@ -34,6 +34,7 @@ class ReserveEventHandler implements Event
         $costDetails = $this->getCostdetails($this->folderId);
 
         return json_encode([
+            'id' => $this->folderId,
             'title' => $folder['title'],
             'budget' => $budgetDetails['total'],
             'budgetPilotage' => $budgetDetails['pilotage'],

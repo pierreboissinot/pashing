@@ -18,8 +18,9 @@
         "heroku-postbuild": "encore production"
     },
     "dependencies": {
-        "canvas-gauges": "^2.1.5",
+        "axios": "^0.18.0",
         "d3": "^5.5.0",
+        "progressbar.js": "^1.0.1",
         "uglifyjs-webpack-plugin": "^1.2.6",
         "vue-grid-layout": "^2.1.13",
         "vue-knob-control": "^1.2.0",
