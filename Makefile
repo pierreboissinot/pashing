@@ -1,0 +1,2 @@
+lint-php:
+	docker run -it --rm -v $(shell pwd):/project -v $(shell pwd)/tmp-phpqa:/tmp -w /project jakzal/phpqa php-cs-fixer fix --config=.php_cs.dist -v --using-cache=no --path-mode=intersection ./src
