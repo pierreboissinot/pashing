@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\EventHandler\ReserveEventHandler;
+use App\Service\Wrike;
 use Sse\SSE;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +15,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProjetsController extends AbstractController
 {
     /**
+     * @var Wrike
+     */
+    private $wrike;
+
+    /**
+     * ProjetsController constructor.
+     *
+     * @param Wrike $wrike
+     */
+    public function __construct(Wrike $wrike)
+    {
+        $this->wrike = $wrike;
+    }
+
+    /**
      * @Route("/events")
+     *
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     public function events()
@@ -22,23 +39,23 @@ class ProjetsController extends AbstractController
         $sse = new SSE();
         $projects = $this->getProjects();
         foreach ($projects as $project) {
-            $sse->addEventListener("event_project_{$project}", new ReserveEventHandler($project));
+            $sse->addEventListener("event_project_{$project}", new ReserveEventHandler($project, $this->wrike));
         }
-        
+
         return $sse->createResponse();
     }
-    
+
     /**
      * @return JsonResponse
      * @Route("/list")
      */
     public function projets()
     {
-       $projects = $this->getProjects();
-        
+        $projects = $this->getProjects();
+
         return new JsonResponse($projects);
     }
-    
+
     private function getProjects()
     {
         $wrikeUrl = getenv('WRIKE_URL');
@@ -54,7 +71,7 @@ class ProjetsController extends AbstractController
         $output = curl_exec($ch);
         curl_close($ch);
         $projects = json_decode($output, true)['data'][0]['childIds'];
-        
+
         return $projects;
     }
 }
