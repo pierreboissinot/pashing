@@ -5,15 +5,14 @@
             <div class="column-one">
                 <div class="main-infos">
                     <p>Budget restant</p>
-                    <h2 class="reserve">{{ reserve }}</h2>
-                    
-                    <p class="budget">Budget initial: {{ budget }}</p>
+                    <h2 class="reserve">{{ reserveString }}</h2>
+                    <p class="budget">Budget initial: {{ budgetString }}</p>
                 </div>
                 <div class="categories">
-                    <div>
-                    <knob-control class="dial"
-                                  :value="event.pilotage"
-                                  :max="event.budgetPilotage"
+                    <div v-if="pilotage && budgetPilotage">
+                        <knob-control class="dial"
+                                  :value="pilotage"
+                                  :max="budgetPilotage"
                                   :min="0"
                                   :size="50"
                                   text-color="#000"
@@ -21,12 +20,12 @@
                                   secondary-color="#fff"
                                   title="'Pilotage'"
                     ></knob-control>
-                        <p class="text-center text-legend">Conception</p>
+                        <p class="text-center text-legend">Pilotage</p>
                     </div>
-                    <div>
-                    <knob-control class="dial"
-                                  :value="event.conception"
-                                  :max="event.budgetConception"
+                    <div v-if="conception && budgetConception">
+                        <knob-control class="dial"
+                                  :value="conception"
+                                  :max="budgetConception"
                                   :min="0"
                                   :size="50"
                                   text-color="#000"
@@ -34,12 +33,12 @@
                                   secondary-color="#fff"
                                   title="Conception"
                     ></knob-control>
-                        <p class="text-center text-legend">Réalisation</p>
+                        <p class="text-center text-legend">Conception</p>
                     </div>
-                    <div>
-                    <knob-control class="dial"
-                                  :value="event.realisation"
-                                  :max="event.budgetRealisation"
+                    <div v-if="realisation && budgetRealisation">
+                        <knob-control class="dial"
+                                  :value="realisation"
+                                  :max="budgetRealisation"
                                   :min="0"
                                   :size="50"
                                   text-color="#000"
@@ -47,85 +46,122 @@
                                   secondary-color="#fff"
                                   title="Réalisation"
                     ></knob-control>
-                        <p class="text-center text-legend">Pilotage</p>
+                        <p class="text-center text-legend">Réalisation</p>
                     </div>
                 </div>
                 <div id="detailed-legend"><p>Temps passé / Temps vendu</p></div>
             </div>
             <div class="column-two">
-                <canvas data-type="linear-gauge"
-                        v-bind:data-value="event.reserve"
-                        data-min-value="0"
-                        v-bind:data-max-value="event.budget"
-                        data-units=""
-                        data-tick-side="right"
-                        data-ticks-width="0"
-                        data-number-side="right"
-                        data-borders="false"
-                        data-bar-begin-circle="false"
-                        data-stroke-ticks="false"
-                        data-width="50"
-                        data-height="200"
-                        data-color-units="#fff"
-                        data-value-box="false"
-                        data-bar-stroke-width="0"
-                        data-bar-stroke-progress="false"
-                        data-major-ticks=""
-                        data-minor-ticks=""
-                        data-needle="false"
-                        data-needle-width="0"
-                        data-color-plate="rgba(255, 255, 255, 0)"
-                        data-color-numbers="rgba(255, 255, 255, 0)"
-                        data-color-bar-stroke="rgba(255, 255, 255, 0)"
-                        data-color-stroke-ticks="rgba(255, 255, 255, 0)"
-                        data-color-bar="#4ecdc4"
-                        data-color-bar-progress="#1a535c"
-                ></canvas>
+                <div class="progress vertical-line" :id="reserveId"></div>
             </div>
         </div>
-        <p class="updated-at">{{ new Date(event.updatedAt*1000).toLocaleTimeString() }}</p>
+        <p class="updated-at">{{ new Date(updatedAt*1000).toLocaleTimeString() }}</p>
     </div>
 </template>
 
 <script>
-    import 'canvas-gauges/gauge.min';
+    import ProgressBar from 'progressbar.js';
+    
     import VueKnobControl from 'vue-knob-control';
     import wNumb from 'wnumb';
     export default {
-        props: ['event'],
+        props: [ 'projectId', 'eventSource'],
         components: {
             'knob-control': VueKnobControl,
         },
-        data: {
-            event: {
-                pilotage: 0
+        propData:{
+            eventSource: null
+        },
+        data: function () {
+            return {
+                eventData: null
             }
         },
+        mounted: function() {
+            this.$nextTick(function() {
+                let eventType = `event_project_${this.projectId}`;
+                var reserveLine = new ProgressBar.Line(`#${this.reserveId}`, {
+                    color: '#1a535c',
+                    duration: 3000,
+                    easing: 'easeInOut',
+                    trailColor: '#4ecdc4',
+                    strokeWidth: 4,
+                    trailWidth: 1,
+                    svgStyle: {width: '100%', height: '100%'}
+                });
+                this.eventSource.addEventListener(eventType, event => {
+                    this.eventData = JSON.parse(event.data);
+                    console.log(event.data);
+    
+                    if (this.reserveValue > 0 && this.budgetValue > 0) {
+                        let reservePercent = this.eventData.reserve * 100 / this.eventData.budget;
+                        console.log('reserve', this.eventData.reserve);
+                        console.log('budget', this.eventData.budget);
+                        console.log('reservePercent', reservePercent);
+                        reserveLine.animate(reservePercent/100);
+                    } else {
+                        reserveLine.animate(0);
+                    }
+                }, false);
+            });
+        },
+        methods: {
+        },
         computed: {
+            reserveId: function () {
+                return this.projectId.replace(/[0-9]/g, '').toLowerCase();
+            },
+            conception: function () {
+                return null != this.eventData ? this.eventData.conception : null;
+            },
+            budgetConception: function () {
+                return null != this.eventData ? this.eventData.budgetConception : null;
+            },
+            pilotage: function () {
+                return null != this.eventData ? this.eventData.pilotage : null;
+            },
+            budgetPilotage: function () {
+                return null != this.eventData ? this.eventData.budgetPilotage : null;
+            },
+            realisation: function () {
+                return null != this.eventData ? this.eventData.realisation : null;
+            },
+            budgetRealisation: function () {
+                return null != this.eventData ? this.eventData.budgetRealisation : null;
+            },
+            updatedAt: function () {
+                return null != this.eventData ? this.eventData.updatedAt : null;
+            },
             title: function () {
-                return undefined !== this.event.title ? this.event.title.substring(0, 29) + '.' : 'title';
+                return null != this.eventData ? this.eventData.title.substring(0, 29) + '.' : 'title';
             },
-            reserve: function () {
+            reserveString: function () {
                 let moneyFormat = wNumb({
                     mark: '.',
                     thousand: ' ',
                     suffix: ' € HT'
                 });
-                return moneyFormat.to(this.event.reserve);
+                return null != this.eventData ? moneyFormat.to(this.eventData.reserve) : '';
             },
-            budget: function () {
+            reserveValue: function () {
+                return null != this.eventData ? this.eventData.reserve : 0;
+            },
+            budgetString: function () {
                 let moneyFormat = wNumb({
                     mark: '.',
                     thousand: ' ',
                     suffix: ' € HT'
                 });
-                return moneyFormat.to(this.event.budget);
+                return null != this.eventData ? moneyFormat.to(this.eventData.budget) : 0;
+            },
+            budgetValue: function () {
+                return null != this.eventData ? this.eventData.budget : 0;
             },
             classStatus: function () {
                 return {
-                    'danger': this.event.reserve < 0,
-                    'warning': 0 === this.event.reserve,
-                    'success': this.event.reserve > 0
+                    'danger': null != this.eventData ? this.eventData.reserve < 0 : false,
+                    'warning': null != this.eventData? 0 === this.eventData.reserve : false,
+                    'success': null != this.eventData ? this.eventData.reserve > 0 : false,
                 }
             }
         }
@@ -142,7 +178,17 @@
     // Widget-number styles
     // ----------------------------------------------------------------------------
     .widget-project {
+        //width: 300px;
+        height: 360px;
+        margin: 4px;
         color: black;
+        
+        .vertical-line {
+            transform: rotate(-90deg);
+            margin-top: 150px;
+            width: 100px;
+            height: 8px;
+        }
         
         .text-center {
             text-align: center;
