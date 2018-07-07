@@ -44,7 +44,7 @@ class ProjetsController extends AbstractController
 
         return $sse->createResponse();
     }
-    
+
     /**
      * @Route("/{id}/metrics")
      *

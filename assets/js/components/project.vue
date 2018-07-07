@@ -236,6 +236,7 @@
         }
         
         .title {
+            font-size: 20px;
             color: $title-color;
         }
         
