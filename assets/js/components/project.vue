@@ -1,6 +1,6 @@
 <template>
     <transition appear>
-        <div class="widget widget-project"
+        <div class="widget widget-project" :id="projectId"
          v-bind:class="classStatus"
         v-if="eventData">
         <h1 class="title">{{ title }}</h1>
@@ -109,8 +109,16 @@
                             trailWidth: 1,
                             svgStyle: {width: '100%', height: '100%'}
                         });
+                        if (this.reserveValue > 0 && this.budgetValue > 0) {
+                            let reservePercent = this.eventData.reserve * 100 / this.eventData.budget;
+                            reserveLine.animate(reservePercent/100);
+                        } else {
+                            reserveLine.animate(0);
+                        }
                         console.log(`register es for ${eventType}}`);
                         this.eventSource.addEventListener(eventType, event => {
+                            document.querySelector(`#${this.projectId}`).classList.add('animated');
+                            document.querySelector(`#${this.projectId}`).classList.add('flash');
                             this.eventData = JSON.parse(event.data);
                             console.log(event.data);
         
@@ -186,6 +194,7 @@
 </script>
 
 <style scoped lang="scss">
+    @import '~animate.css';
     $value-color: #000;
     
     $title-color: rgba(75, 75, 75, 0.7);
