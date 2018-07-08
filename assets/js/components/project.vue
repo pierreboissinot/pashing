@@ -1,5 +1,7 @@
 <template>
-    <transition appear>
+    <transition
+            name="fade"
+            appear>
         <div class="widget widget-project" :id="projectId"
          v-bind:class="classStatus"
         v-if="eventData">
@@ -290,5 +292,11 @@
 
     .success {
         background-color: #f7fff7;
+    }
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
     }
 </style>
