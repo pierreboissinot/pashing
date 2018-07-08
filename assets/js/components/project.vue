@@ -192,9 +192,10 @@
     // ----------------------------------------------------------------------------
     .widget-project {
         //width: 300px;
-        height: 360px;
+        //height: 360px;
         margin: 4px;
         color: black;
+        padding: 8px;
         
         .vertical-line {
             transform: rotate(-90deg);
@@ -243,6 +244,7 @@
         .reserve {
             color: $value-color;
             font-size: 50px;
+            padding: 8px;
         }
         
         .budget {
