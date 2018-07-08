@@ -1,5 +1,8 @@
 <template>
-    <div class="widget widget-project" v-bind:class="classStatus">
+    <transition appear>
+        <div class="widget widget-project"
+         v-bind:class="classStatus"
+        v-if="eventData">
         <h1 class="title">{{ title }}</h1>
         <div class="wrapper">
             <div class="column-one">
@@ -57,6 +60,7 @@
         </div>
         <p class="updated-at">{{ new Date(updatedAt*1000).toLocaleTimeString() }}</p>
     </div>
+    </transition>
 </template>
 
 <script>
