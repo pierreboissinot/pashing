@@ -18,7 +18,7 @@ class Wrike
         $output = curl_exec($ch);
         curl_close($ch);
         $folder = json_decode($output, true)['data'][0]; // get the first folder in response
-        $budgetDetails = $this->getBudgetDetails($folder['customFields']);
+        $budgetDetails = $this->getBudgetDetails(null === $folder['customFields'] ? [] : $folder['customFields']);
         $costDetails = $this->getCostdetails($id);
 
         return json_encode([
