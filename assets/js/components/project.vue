@@ -119,8 +119,13 @@
                         }
                         console.log(`register es for ${eventType}}`);
                         this.eventSource.addEventListener(eventType, event => {
-                            document.querySelector(`#${this.projectId}`).classList.add('animated');
-                            document.querySelector(`#${this.projectId}`).classList.add('flash');
+                            let projectWidget = document.querySelector(`#${this.projectId}`);
+                            projectWidget.classList.add('animated');
+                            projectWidget.classList.add('flash');
+                            setTimeout(function(){
+                                projectWidget.classList.remove('animated');
+                                projectWidget.classList.remove('flash');
+                            }, 3000);
                             this.eventData = JSON.parse(event.data);
                             console.log(event.data);
         
