@@ -14,10 +14,11 @@
                     <p class="budget">Budget initial: {{ budgetString }}</p>
                 </div>
                 <div class="categories">
-                    <div v-if="pilotage && budgetPilotage">
+                    <!-- TODO: -->
+                    <div v-if="pilotageHoursSold">
                         <knob-control class="dial"
-                                  :value="pilotage"
-                                  :max="budgetPilotage"
+                                  :value="pilotageHoursSpent"
+                                  :max="pilotageHoursSold"
                                   :min="0"
                                   :size="50"
                                   text-color="#000"
@@ -25,12 +26,12 @@
                                   secondary-color="#4ecdc4"
                                   title="'Pilotage'"
                     ></knob-control>
-                        <p class="text-center text-legend">Pilotage</p>
+                        <p class="text-center text-legend">Pilotage <br>{{ pilotageHoursSold }}</p>
                     </div>
-                    <div v-if="conception && budgetConception">
+                    <div v-if="conceptionHoursSold">
                         <knob-control class="dial"
-                                  :value="conception"
-                                  :max="budgetConception"
+                                  :value="conceptionHoursSpent"
+                                  :max="conceptionHoursSold"
                                   :min="0"
                                   :size="50"
                                   text-color="#000"
@@ -38,12 +39,12 @@
                                   secondary-color="#4ecdc4"
                                   title="Conception"
                     ></knob-control>
-                        <p class="text-center text-legend">Conception</p>
+                        <p class="text-center text-legend">Conception <br>{{ conceptionHoursSold }}</p>
                     </div>
-                    <div v-if="realisation && budgetRealisation">
+                    <div v-if="realisationHoursSold">
                         <knob-control class="dial"
-                                  :value="realisation"
-                                  :max="budgetRealisation"
+                                  :value="realisationHoursSpent"
+                                  :max="realisationHoursSold"
                                   :min="0"
                                   :size="50"
                                   text-color="#000"
@@ -51,7 +52,7 @@
                                   secondary-color="#4ecdc4"
                                   title="Réalisation"
                     ></knob-control>
-                        <p class="text-center text-legend">Réalisation</p>
+                        <p class="text-center text-legend">Réalisation<br>{{ realisationHoursSold }}</p>
                     </div>
                 </div>
                 <div id="detailed-legend"><p>Temps passé / Temps vendu</p></div>
@@ -108,7 +109,7 @@
                             easing: 'easeInOut',
                             trailColor: '#4ecdc4',
                             strokeWidth: 4,
-                            trailWidth: 1,
+                            trailWidth: 4,
                             svgStyle: {width: '100%', height: '100%'}
                         });
                         if (this.reserveValue > 0 && this.budgetValue > 0) {
@@ -145,6 +146,24 @@
             reserveId: function () {
                 return this.projectId.replace(/[0-9]/g, '').toLowerCase();
             },
+            conceptionHoursSpent: function () {
+                return null != this.eventData ? Math.round(this.eventData.conceptionHoursSpent) : 0;
+            },
+            conceptionHoursSold: function () {
+                return null != this.eventData ? Math.round(this.eventData.conceptionHoursSold) : null;
+            },
+            pilotageHoursSpent: function () {
+                return null != this.eventData ? Math.round(this.eventData.pilotageHoursSpent) : 0;
+            },
+            pilotageHoursSold: function () {
+                return null != this.eventData ? Math.round(this.eventData.pilotageHoursSold) : null;
+            },
+            realisationHoursSpent: function () {
+                return null != this.eventData ? Math.round(this.eventData.realisationHoursSpent) : 0;
+            },
+            realisationHoursSold: function () {
+                return null != this.eventData ? Math.round(this.eventData.realisationHoursSold) : null;
+            },
             conception: function () {
                 return null != this.eventData ? this.eventData.conception : null;
             },
@@ -173,7 +192,8 @@
                 let moneyFormat = wNumb({
                     mark: '.',
                     thousand: ' ',
-                    suffix: ' € HT'
+                    suffix: ' € HT',
+                    decimals: 0,
                 });
                 return null != this.eventData ? moneyFormat.to(this.eventData.reserve) : '';
             },
@@ -231,7 +251,7 @@
         }
         
         .text-legend {
-            font-size: 8px;
+            font-size: 12px;
         }
         
         
