@@ -294,7 +294,7 @@
     }
 
     .warning {
-        background-color: orange;
+        background-color: #f7fff7;
     }
 
     .success {
