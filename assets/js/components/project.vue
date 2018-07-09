@@ -126,8 +126,8 @@
                         }
                         console.log(`register es for ${eventType}}`);
                         this.eventSource.addEventListener(eventType, event => {
-                            let projectWidget = document.querySelector(`#${this.projectId}`);
                             /*
+                            let projectWidget = document.querySelector(`#${this.projectId}`);
                             projectWidget.classList.add('animated');
                             projectWidget.classList.add('flash');
                             setTimeout(function(){
