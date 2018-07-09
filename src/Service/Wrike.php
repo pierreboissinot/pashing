@@ -147,7 +147,7 @@ class Wrike
                             break;
                     }
                 } else {
-                    $sum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
+                    $sum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
                     $hoursSpent += $timelog['hours'];
                 }
             }
