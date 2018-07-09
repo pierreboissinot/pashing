@@ -66,7 +66,7 @@ class Wrike
                     $pilotageBudget += $hours * eval('return '.getenv('PILOTAGE_HOUR_COST').';');
                     break;
                 default:
-                    $budget += $hours * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
+                    $budget += $hours * eval('return '.getenv('REALISATION_HOUR_COST').';');
                     break;
             }
         }
