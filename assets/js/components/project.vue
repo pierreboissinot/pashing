@@ -22,7 +22,7 @@
                                   :size="50"
                                   text-color="#000"
                                   primary-color="#ffe66d"
-                                  secondary-color="#fff"
+                                  secondary-color="#4ecdc4"
                                   title="'Pilotage'"
                     ></knob-control>
                         <p class="text-center text-legend">Pilotage</p>
@@ -35,7 +35,7 @@
                                   :size="50"
                                   text-color="#000"
                                   primary-color="#ffe66d"
-                                  secondary-color="#fff"
+                                  secondary-color="#4ecdc4"
                                   title="Conception"
                     ></knob-control>
                         <p class="text-center text-legend">Conception</p>
@@ -48,7 +48,7 @@
                                   :size="50"
                                   text-color="#000"
                                   primary-color="#ffe66d"
-                                  secondary-color="#fff"
+                                  secondary-color="#4ecdc4"
                                   title="Réalisation"
                     ></knob-control>
                         <p class="text-center text-legend">Réalisation</p>
