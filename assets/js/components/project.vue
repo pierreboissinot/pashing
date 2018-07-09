@@ -4,14 +4,14 @@
             appear>
         <div class="widget widget-project" :id="projectId"
          v-bind:class="classStatus"
-        v-if="eventData">
+        v-if="eventData && eventData.budget">
         <h1 class="title">{{ title }}</h1>
         <div class="wrapper">
             <div class="column-one">
                 <div class="main-infos">
-                    <p>Budget restant</p>
-                    <h2 class="reserve">{{ reserveString }}</h2>
-                    <p class="budget">Budget initial: {{ budgetString }}</p>
+                        <p id="label-reserve" v-bind:class="classRedBg">Budget restant</p>
+                        <h2 class="reserve" v-bind:class="classRedBg">{{ reserveString }}</h2>
+                        <p class="budget">Budget initial: {{ budgetString }}</p>
                 </div>
                 <div class="categories">
                     <!-- TODO: -->
@@ -20,39 +20,42 @@
                                   :value="pilotageHoursSpent"
                                   :max="pilotageHoursSold"
                                   :min="0"
-                                  :size="50"
+                                  :size="70"
+                                      :value-display-function="displayHours"
                                   text-color="#000"
                                   primary-color="#ffe66d"
                                   secondary-color="#4ecdc4"
                                   title="'Pilotage'"
                     ></knob-control>
-                        <p class="text-center text-legend">Pilotage <br>{{ pilotageHoursSold }}</p>
+                        <p class="text-center text-legend">Pilotage <br>{{ pilotageHoursSold }}h</p>
                     </div>
                     <div v-if="conceptionHoursSold">
                         <knob-control class="dial"
                                   :value="conceptionHoursSpent"
                                   :max="conceptionHoursSold"
                                   :min="0"
-                                  :size="50"
+                                  :size="70"
+                                      :value-display-function="displayHours"
                                   text-color="#000"
                                   primary-color="#ffe66d"
                                   secondary-color="#4ecdc4"
                                   title="Conception"
                     ></knob-control>
-                        <p class="text-center text-legend">Conception <br>{{ conceptionHoursSold }}</p>
+                        <p class="text-center text-legend">Conception <br>{{ conceptionHoursSold }}h</p>
                     </div>
                     <div v-if="realisationHoursSold">
                         <knob-control class="dial"
                                   :value="realisationHoursSpent"
                                   :max="realisationHoursSold"
                                   :min="0"
-                                  :size="50"
+                                  :size="70"
+                                      :value-display-function="displayHours"
                                   text-color="#000"
                                   primary-color="#ffe66d"
                                   secondary-color="#4ecdc4"
                                   title="Réalisation"
                     ></knob-control>
-                        <p class="text-center text-legend">Réalisation<br>{{ realisationHoursSold }}</p>
+                        <p class="text-center text-legend">Réalisation<br>{{ realisationHoursSold }}h</p>
                     </div>
                 </div>
                 <div id="detailed-legend"><p>Temps passé / Temps vendu</p></div>
@@ -91,6 +94,9 @@
             });
         },
         methods: {
+            displayHours(v) {
+                return `${v}h`;
+            },
             getMetrics() {
                 axios.get(`/projets/${this.projectId}/metrics`)
                     .then((response) => {
@@ -213,9 +219,18 @@
             },
             classStatus: function () {
                 return {
+                    'success': true
+                    /*
                     'danger': null != this.eventData ? this.eventData.reserve < 0 : false,
                     'warning': null != this.eventData? 0 === this.eventData.reserve : false,
                     'success': null != this.eventData ? this.eventData.reserve > 0 : false,
+                    */
+                }
+            },
+            classRedBg: function () {
+                return {
+                    'text-red': null != this.eventData ? this.eventData.reserve < 0 : false,
+                    'text-black': null != this.eventData ? this.eventData.reserve > 0 : false,
                 }
             }
         }
@@ -226,7 +241,7 @@
     @import '~animate.css';
     $value-color: #000;
     
-    $title-color: rgba(75, 75, 75, 0.7);
+    $title-color: #222;
     $moreinfo-color: rgba(75, 75, 75, 0.7);
     
     // ----------------------------------------------------------------------------
@@ -234,7 +249,7 @@
     // ----------------------------------------------------------------------------
     .widget-project {
         //width: 300px;
-        //height: 360px;
+        min-height: 300px;
         margin: 4px;
         color: black;
         padding: 8px;
@@ -242,8 +257,8 @@
         .vertical-line {
             transform: rotate(-90deg);
             margin-top: 150px;
-            width: 100px;
-            height: 8px;
+            width: 200px;
+            height: 16px;
         }
         
         .text-center {
@@ -251,9 +266,17 @@
         }
         
         .text-legend {
+            color: #47bbb3;
             font-size: 12px;
         }
         
+        .text-red {
+            color: #ff6b6b;
+        }
+    
+        .text-black {
+            color: rgb(26, 83, 92);
+        }
         
         .wrapper {
             display: grid;
@@ -269,8 +292,14 @@
             grid-row: 1;
         }
         
+        .label-reserve {
+            font-size: 10px;
+            color: #1a535c;
+        }
+        
         .categories {
-            margin: 14px;
+            margin-top: 14px;
+            padding-bottom: 4px;
             display: inline-flex;
         }
         
@@ -279,32 +308,39 @@
         }
         
         .title {
-            font-size: 20px;
+            font-size: 26px;
             color: $title-color;
+            border-bottom: 1px solid #47bbb3;
+            padding-bottom: 8px;
         }
         
         .reserve {
-            color: $value-color;
+            //color: $value-color;
+            font-weight: normal;
             font-size: 50px;
             padding: 8px;
         }
         
         .budget {
-            color: $moreinfo-color;
+            font-size: 10px;
+            font-weight: normal;
+            color: rgb(78, 205, 196);
         }
         
         .main-infos {
             color: $value-color;
+            margin-bottom: 8px;
         }
         
         .updated-at {
             color: rgba(0, 0, 0, 0.3);
+            margin-top: 14px;
         }
         
         #detailed-legend {
-            color: #000;
+            color: #2c3e50;
             text-align: center;
-            font-weight: bold;
+            font-weight: normal;
             font-size: 14px;
         }
         
