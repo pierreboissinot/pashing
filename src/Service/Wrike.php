@@ -45,8 +45,16 @@ class Wrike
         $realisationBudget = 0;
         foreach ($customFields as $customField) {
             $stringValue = $customField['value'];
-            // TODO: manage minutes
-            $hours = (int) substr($stringValue, 0, 2);
+            if (empty($stringValue) || !in_array($customField['id'], [
+                    getenv('WRIKE_CUSTOM_FIELD_CONCEPTION'),
+                    getenv('WRIKE_CUSTOM_FIELD_REALISATION'),
+                    getenv('WRIKE_CUSTOM_FIELD_PILOTAGE'),
+                ])
+            ) {
+                continue;
+            }
+            $timeNumbers = explode(':', $stringValue);
+            $hours = eval("return {$timeNumbers[0]}.{$timeNumbers[1]};");
             switch ($customField['id']) {
                 case getenv('WRIKE_CUSTOM_FIELD_CONCEPTION'):
                     $conceptionBudget += $hours * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
