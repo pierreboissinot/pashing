@@ -115,7 +115,7 @@ class Wrike
                         $pilotageSum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
                         break;
                     default:
-                        $sum += $timelog['hours'] * eval('return '.getenv('CONCEPTION_HOUR_COST').';');
+                        $sum += $timelog['hours'] * eval('return '.getenv('REALISATION_HOUR_COST').';');
                         break;
                 }
             } else {
