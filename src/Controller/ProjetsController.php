@@ -34,6 +34,7 @@ class ProjetsController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
+    /*
     public function events()
     {
         $sse = new SSE();
@@ -44,6 +45,7 @@ class ProjetsController extends AbstractController
 
         return $sse->createResponse();
     }
+    */
 
     /**
      * @Route("/{id}/metrics")
