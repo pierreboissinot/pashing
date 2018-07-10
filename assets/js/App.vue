@@ -1,10 +1,12 @@
 <template>
     <div>
+        <!--
         <h1>Dashboard</h1>
         <p>
             <router-link to="/cest-pas-sorcier">C'est pas sorcier</router-link>
             <router-link to="/projets">Projets</router-link>
         </p>
+        -->
         <!-- route outlet -->
         <!-- component matched by the route will render here -->
         <router-view></router-view>
