@@ -109,32 +109,28 @@
                         console.log(`/projets/${this.projectId}/metrics finished`);
                         // Set up listener on event source
                         let eventType = `event_project_${this.projectId}`;
-                        var reserveLine = new ProgressBar.Line(`#${this.reserveId}`, {
-                            color: '#1a535c',
-                            duration: 3000,
-                            easing: 'easeInOut',
-                            trailColor: '#4ecdc4',
-                            strokeWidth: 4,
-                            trailWidth: 4,
-                            svgStyle: {width: '100%', height: '100%'}
-                        });
-                        if (this.reserveValue > 0 && this.budgetValue > 0) {
-                            let reservePercent = this.eventData.reserve * 100 / this.eventData.budget;
-                            reserveLine.animate(reservePercent/100);
-                        } else {
-                            reserveLine.animate(0);
+                        // if component is rendered (see v-if upper)
+                        if (this.budget) {
+                            var reserveLine = new ProgressBar.Line(`#${this.reserveId}`, {
+                                color: '#1a535c',
+                                duration: 3000,
+                                easing: 'easeInOut',
+                                trailColor: '#4ecdc4',
+                                strokeWidth: 4,
+                                trailWidth: 4,
+                                svgStyle: {width: '100%', height: '100%'}
+                            });
+                            if (this.reserveValue > 0 && this.budgetValue > 0) {
+                                let reservePercent = this.eventData.reserve * 100 / this.eventData.budget;
+                                reserveLine.animate(reservePercent/100);
+                            } else {
+                                reserveLine.animate(0);
+                            }
                         }
+                        /*
                         console.log(`register es for ${eventType}}`);
                         this.eventSource.addEventListener(eventType, event => {
                             let projectWidget = document.querySelector(`#${this.projectId}`);
-                            /*
-                            projectWidget.classList.add('animated');
-                            projectWidget.classList.add('flash');
-                            setTimeout(function(){
-                                projectWidget.classList.remove('animated');
-                                projectWidget.classList.remove('flash');
-                            }, 3000);
-                            */
                             this.eventData = JSON.parse(event.data);
                             console.log(event.data);
         
@@ -145,6 +141,7 @@
                                 reserveLine.animate(0);
                             }
                         }, false);
+                        */
                     });
             },
         },

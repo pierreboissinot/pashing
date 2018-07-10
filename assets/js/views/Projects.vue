@@ -10,8 +10,6 @@
 </template>
 
 <script>
-    let testLayout = [
-    ];
     
     import project from '../components/project'
     import axios from 'axios';
@@ -22,7 +20,6 @@
             'project': project,
         },
         data: () => ({
-            layout: testLayout,
             projects: [],
             es: null,
         }),
