@@ -76,12 +76,12 @@
     import axios from 'axios';
     
     export default {
-        props: [ 'projectId', 'eventSource'],
+        props: [ 'projectId', /*'eventSource'*/],
         components: {
             'knob-control': VueKnobControl,
         },
         propData:{
-            eventSource: null
+            //eventSource: null
         },
         data: function () {
             return {
@@ -110,7 +110,6 @@
                         // Set up listener on event source
                         let eventType = `event_project_${this.projectId}`;
                         // if component is rendered (see v-if upper)
-                        if (this.budget) {
                             var reserveLine = new ProgressBar.Line(`#${this.reserveId}`, {
                                 color: '#1a535c',
                                 duration: 3000,
@@ -126,11 +125,9 @@
                             } else {
                                 reserveLine.animate(0);
                             }
-                        }
-                        /*
+                            /*
                         console.log(`register es for ${eventType}}`);
                         this.eventSource.addEventListener(eventType, event => {
-                            let projectWidget = document.querySelector(`#${this.projectId}`);
                             this.eventData = JSON.parse(event.data);
                             console.log(event.data);
         

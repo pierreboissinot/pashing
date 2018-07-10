@@ -3,8 +3,7 @@
         <ul id="projects">
             <project v-for="(project, index) in projects"
                      :key="index"
-                    v-bind:project-id="project"
-                    v-bind:event-source="es"></project>
+                    v-bind:project-id="project"></project>
         </ul>
     </div>
 </template>
@@ -21,7 +20,7 @@
         },
         data: () => ({
             projects: [],
-            es: null,
+            //es: null,
         }),
         mounted: function() {
             this.$nextTick(function() {
@@ -34,7 +33,7 @@
                     .then((response) => {
                         let ids = response.data;
                         this.projects = ids;
-                        this.es = new EventSource(`/projets/events`);
+                        //this.es = new EventSource(`/projets/events`);
                     })
                     .catch((error) => {
                         console.log(error);
