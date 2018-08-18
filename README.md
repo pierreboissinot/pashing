@@ -1,4 +1,4 @@
-https://sonarcloud.io/api/project_badges/measure?project=pashing&metric=alert_status
+<img src="https://sonarcloud.io/api/project_badges/measure?project=pashing&metric=alert_status">
 
 # Pashing
 
