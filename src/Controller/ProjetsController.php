@@ -85,7 +85,7 @@ class ProjetsController extends AbstractController
         $output = curl_exec($ch);
         $projects = json_decode($output, true)['data'][0]['childIds'];
         curl_close($ch);
-    
+
         return $projects;
     }
 }
