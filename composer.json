@@ -1,5 +1,7 @@
 {
     "type": "project",
+    "name": "pierreboissinot/pashing",
+    "description": "Realtime project metrics",
     "license": "proprietary",
     "require": {
         "php": "^7.1.3",
