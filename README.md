@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/pierreboissinot/pashing.svg?branch=master)](https://travis-ci.org/pierreboissinot/pashing)
 <img src="https://sonarcloud.io/api/project_badges/measure?project=pashing&metric=alert_status">
 
 # Pashing
