@@ -1,3 +1,5 @@
+https://sonarcloud.io/api/project_badges/measure?project=pashing&metric=alert_status
+
 # Pashing
 
 Simple realtime dashboard.
