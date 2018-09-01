@@ -45,6 +45,25 @@ class Wrike
         ]);
     }
 
+    public function getProjects()
+    {
+        $wrikeUrl = getenv('WRIKE_URL');
+        $folderId = getenv('WRIKE_PROJECTS_FOLDER_ID');
+        $token = getenv('WRIKE_PERMANENT_TOKEN');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "${wrikeUrl}/api/v3/folders/${folderId}");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer {$token}",
+            'Content-Type: application/json',
+        ]);
+        $output = curl_exec($ch);
+        $projects = json_decode($output, true)['data'][0]['childIds'];
+        curl_close($ch);
+
+        return $projects;
+    }
+
     private function getBudgetDetails(array $customFields): array
     {
         $budget = 0;
@@ -57,11 +76,11 @@ class Wrike
         $realisationHoursSold = 0;
         foreach ($customFields as $customField) {
             $stringValue = $customField['value'];
-            if (empty($stringValue) || !in_array($customField['id'], [
+            if (empty($stringValue) || !\in_array($customField['id'], [
                     getenv('WRIKE_CUSTOM_FIELD_CONCEPTION'),
                     getenv('WRIKE_CUSTOM_FIELD_REALISATION'),
                     getenv('WRIKE_CUSTOM_FIELD_PILOTAGE'),
-                ])
+                ], true)
             ) {
                 continue;
             }

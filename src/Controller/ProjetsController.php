@@ -21,8 +21,6 @@ class ProjetsController extends AbstractController
 
     /**
      * ProjetsController constructor.
-     *
-     * @param Wrike $wrike
      */
     public function __construct(Wrike $wrike)
     {
@@ -50,8 +48,6 @@ class ProjetsController extends AbstractController
     /**
      * @Route("/{id}/metrics")
      *
-     * @param string $id
-     *
      * @return JsonResponse
      */
     public function projectMetrics(string $id)
@@ -65,27 +61,8 @@ class ProjetsController extends AbstractController
      */
     public function projets()
     {
-        $projects = $this->getProjects();
+        $projects = $this->wrike->getProjects();
 
         return new JsonResponse($projects);
-    }
-
-    private function getProjects()
-    {
-        $wrikeUrl = getenv('WRIKE_URL');
-        $folderId = getenv('WRIKE_PROJECTS_FOLDER_ID');
-        $token = getenv('WRIKE_PERMANENT_TOKEN');
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "${wrikeUrl}/api/v3/folders/${folderId}");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Authorization: Bearer {$token}",
-            'Content-Type: application/json',
-        ]);
-        $output = curl_exec($ch);
-        $projects = json_decode($output, true)['data'][0]['childIds'];
-        curl_close($ch);
-
-        return $projects;
     }
 }
