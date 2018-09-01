@@ -28,7 +28,7 @@ class NewIssuesEventHandler implements Event
         // close curl resource to free up system resources
         curl_close($ch);
 
-        $count = count(json_decode($output));
+        $count = \count(json_decode($output));
 
         return json_encode([
             'current' => $count,
