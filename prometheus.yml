@@ -23,5 +23,5 @@ scrape_configs:
     metrics_path: /metrics
     scheme: http
     basic_auth:
-      username: lephare
-      password: DoBb6fXizYEx3Zn0klDu
+      username: see_pashing_lephare_password
+      password: see_pashing_lephare_password
