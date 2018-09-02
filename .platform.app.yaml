@@ -5,33 +5,35 @@ type: "php:7.1"
 build:
   flavor: composer
 
+variables:
+  env:
+    # Tell Symfony to always install in production-mode.
+    APP_ENV: 'prod'
+    APP_DEBUG: 0
+
 dependencies:
   nodejs:
     yarn: "*"
 
+# The configuration of app when it is exposed to the web.
 web:
   locations:
-    '/':
-      root: "web"
-      passthru: "/app.php"
-      allow: true
-      expires: -1
-      scripts: true
+    "/":
+      # The public directory of the app, relative to its root.
+      root: "public"
+      # The front-controller script to send non-static requests to.
+      passthru: "/index.php"
 
-disk: 4096
+disk: 2048
 
 mounts:
   "/var/cache": "shared:files/cache"
-  "/var/logs": "shared:files/logs"
+  "/var/log": "shared:files/log"
+  "/var/sessions": "shared:files/sessions"
 
 hooks:
   build: |
-    rm web/app_dev.php
-    rm web/app_test.php
-    rm web/app_test_cached.php
-    rm -rf var/cache/*
-    php bin/console --env=prod --no-debug --ansi cache:clear --no-warmup
-    php bin/console --env=prod --no-debug --ansi cache:warmup
+    bin/console cache:clear
     yarn install
     yarn build
   deploy: |
