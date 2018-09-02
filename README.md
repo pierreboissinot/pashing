@@ -5,6 +5,9 @@
 
 Simple realtime dashboard.
 
+## Features
+* Prometheus exporter, so you can view metrics with Grafana.
+
 ## About
 
 Inspired by [Dashing](https://github.com/Shopify/dashing), a great tool to create dashboards.
