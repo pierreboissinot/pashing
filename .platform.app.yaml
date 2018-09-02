@@ -1,0 +1,38 @@
+# .platform.app.yaml
+name: app
+
+type: "php:7.1"
+build:
+  flavor: composer
+
+dependencies:
+  nodejs:
+    yarn: "*"
+
+web:
+  locations:
+    '/':
+      root: "web"
+      passthru: "/app.php"
+      allow: true
+      expires: -1
+      scripts: true
+
+disk: 4096
+
+mounts:
+  "/var/cache": "shared:files/cache"
+  "/var/logs": "shared:files/logs"
+
+hooks:
+  build: |
+    rm web/app_dev.php
+    rm web/app_test.php
+    rm web/app_test_cached.php
+    rm -rf var/cache/*
+    php bin/console --env=prod --no-debug --ansi cache:clear --no-warmup
+    php bin/console --env=prod --no-debug --ansi cache:warmup
+    yarn install
+    yarn build
+  deploy: |
+    rm -rf var/cache/*
