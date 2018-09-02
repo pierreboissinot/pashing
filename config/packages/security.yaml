@@ -5,7 +5,7 @@ security:
             memory:
                 users:
                     lephare:
-                        password: '%env(pashing_lephare_password)%'
+                        password: '%env(PASHING_LEPHARE_PASSWORD)%'
                         roles: 'ROLE_AUTHENTICATED'
     encoders:
         Symfony\Component\Security\Core\User\User:
