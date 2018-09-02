@@ -1,25 +1,14 @@
 version: '3'
 services:
-  composer:
-    image: "composer"
-    volumes: 
-      - $PWD:/app
-    user: "${UID}:${GID}"
-    command: "install"
-  node:
-    image: "node:8"
-    working_dir: /home/node/app
-    environment:
-      - NODE_ENV=production
+  prometheus:
+    image: quay.io/prometheus/prometheus:latest
+    ports:
+      - 9090:9090
     volumes:
-      - ./:/home/node/app
-    user: "${UID}:${GID}"
-    command: "yarn"
-  phpqa:
-    image: "jakzal/phpqa"
-    user: "${UID}:${GID}"
-    volumes: 
-    - ./:/project
-    - ./tmp-phpqa:/tmp
-    working_dir: /project
-    command: "php-cs-fixer --config=.php_cs.dist --using-cache=no --path-mode=intersection fix src"
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    network_mode: host
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    network_mode: host
