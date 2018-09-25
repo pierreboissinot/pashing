@@ -7,9 +7,9 @@ use App\EventHandler\NewIssuesEventHandler;
 use App\EventHandler\OpenedIssuesEventHandler;
 use App\EventHandler\StaleIssuesEventHandler;
 use App\EventHandler\WrikeEventHandler;
+use App\Service\Gitlab;
 use Http\Client\HttpAsyncClient;
 use Http\Message\MessageFactory;
-use Psr\Log\LoggerInterface;
 use Sse\SSE;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,16 +27,17 @@ class CestPasSorcierController extends AbstractController
      * @var HttpAsyncClient
      */
     protected $httpClient;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
 
-    public function __construct(HttpAsyncClient $client, MessageFactory $messageFactory, LoggerInterface $logger)
+    /**
+     * @var Gitlab
+     */
+    private $gitlab;
+
+    public function __construct(HttpAsyncClient $client, MessageFactory $messageFactory, Gitlab $gitlab)
     {
         $this->httpClient = $client;
         $this->messageFactory = $messageFactory;
-        $this->logger = $logger;
+        $this->gitlab = $gitlab;
     }
 
     /**
@@ -45,10 +46,10 @@ class CestPasSorcierController extends AbstractController
     public function events()
     {
         $sse = new SSE();
-        $sse->addEventListener('event_gitlab_opened_issues', new OpenedIssuesEventHandler());
-        $sse->addEventListener('event_gitlab_closed_issues', new ClosedIssuesEventHandler());
-        $sse->addEventListener('event_gitlab_stale_issues', new StaleIssuesEventHandler());
-        $sse->addEventListener('event_gitlab_new_issues', new NewIssuesEventHandler());
+        $sse->addEventListener('event_gitlab_opened_issues', new OpenedIssuesEventHandler($this->gitlab));
+        $sse->addEventListener('event_gitlab_closed_issues', new ClosedIssuesEventHandler($this->gitlab));
+        $sse->addEventListener('event_gitlab_stale_issues', new StaleIssuesEventHandler($this->gitlab));
+        $sse->addEventListener('event_gitlab_new_issues', new NewIssuesEventHandler($this->gitlab));
         $sse->addEventListener('event_wrike_timelog', new WrikeEventHandler());
 
         return $sse->createResponse();
