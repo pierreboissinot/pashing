@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Gitlab;
 use App\Service\Wrike;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,15 @@ class PrometheusController extends AbstractController
      * @var Wrike
      */
     private $wrike;
+    /**
+     * @var Gitlab
+     */
+    private $gitlab;
 
-    public function __construct(Wrike $wrike)
+    public function __construct(Wrike $wrike, Gitlab $gitlab)
     {
         $this->wrike = $wrike;
+        $this->gitlab = $gitlab;
     }
 
     /**
@@ -26,6 +32,9 @@ class PrometheusController extends AbstractController
     public function metrics(): Response
     {
         $counter = '';
+
+        // Wrike metrics
+
         $folders = $this->wrike->getProjects();
         foreach ($folders as $folder) {
             $metrics = json_decode($this->wrike->getFolderMetrics($folder), true);
@@ -111,6 +120,36 @@ class PrometheusController extends AbstractController
             $counter .= "# TYPE {$metricName} gauge\n";
             $counter .= "{$metricName}{folder=\"{$label}\"} {$metrics['realisationHoursSpent']}\n";
         }
+
+        // Gitlab metrics
+
+        $gitlabProjectId = getenv('GITLAB_PROJECT_ID');
+        $gitlabMetrics = $this->gitlab->getProjectMetrics($gitlabProjectId);
+
+        $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_opened_issues_total";
+        $counter .= "# HELP {$metricName} The total number of opened issues.\n";
+        $counter .= "# TYPE {$metricName} gauge\n";
+        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"opened issues\"} {$gitlabMetrics['opened_issues_total']}\n";
+
+        $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_closed_issues_total";
+        $counter .= "# HELP {$metricName} The total number of closed issues.\n";
+        $counter .= "# TYPE {$metricName} gauge\n";
+        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"closed issues\"} {$gitlabMetrics['closed_issues_total']}\n";
+
+        $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_stale_issues_total";
+        $counter .= "# HELP {$metricName} The total number of stale issues.\n";
+        $counter .= "# TYPE {$metricName} gauge\n";
+        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"stale issues\"} {$gitlabMetrics['stale_issues_total']}\n";
+
+        $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_new_issues_total";
+        $counter .= "# HELP {$metricName} The total number of new issues.\n";
+        $counter .= "# TYPE {$metricName} gauge\n";
+        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"new issues\"} {$gitlabMetrics['new_issues_total']}\n";
+
+        $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_time_spent_hours";
+        $counter .= "# HELP {$metricName} The total number of time spent in hours.\n";
+        $counter .= "# TYPE {$metricName} gauge\n";
+        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"time spent\"} {$this->wrike->getTimeSpentTotal(getenv('WRIKE_FOLDER_ID'))}\n";
 
         return new Response($counter, RESPONSE::HTTP_OK, [
             'Content-type: '.'text/plain; version=0.0.4',

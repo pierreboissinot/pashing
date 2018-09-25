@@ -2,48 +2,33 @@
 
 namespace App\EventHandler;
 
-use DateInterval;
-use DateTime;
+use App\Service\Wrike;
 use Sse\Event;
 
 class WrikeEventHandler implements Event
 {
+    /**
+     * @var Wrike
+     */
+    private $wrike;
+
+    public function __construct(Wrike $wrike)
+    {
+        $this->wrike = $wrike;
+    }
+
     public function update()
     {
-        $wrikeUrl = getenv('WRIKE_URL');
-        $folderId = getenv('WRIKE_FOLDER_ID');
-        $token = getenv('WRIKE_PERMANENT_TOKEN');
-        $now = new DateTime();
-        $thirtyDaysAgo = $now
-            ->sub(new DateInterval('P30D'))
-            ->format('Y-m-d\TH:i:s\Z')
-        ;
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "${wrikeUrl}/api/v3/folders/${folderId}/timelogs?createdDate={\"start\":\"${thirtyDaysAgo}\"}");
-        //return the transfer as a string
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Authorization: Bearer {$token}",
-            'Content-Type: application/json',
-        ]);
-        // $output contains the output string
-        $output = curl_exec($ch);
-        // close curl resource to free up system resources
-        curl_close($ch);
-        $timelogs = json_decode($output, true)['data'];
-        $sum = 0;
-        foreach ($timelogs as $timelog) {
-            $sum += $timelog['hours'];
-        }
+        $timeSpentTotal = $this->wrike->getTimeSpentTotal(getenv('WRIKE_FOLDER_ID'));
 
         //wrike_time_formatted = "#{sum.round(2).to_s.split(".")[0]}:#{((Integer(sum.round(2).to_s.split(".")[1]) / 100.0) * 60).round}"
-        $hours = (int) $sum;
-        $minutes = round((($sum - $hours) / 100 * 60), 2);
+        $hours = (int) $timeSpentTotal;
+        $minutes = round((($timeSpentTotal - $hours) / 100 * 60), 2);
         $formatedMinutes = mb_substr("{$minutes}", 2, 2);
         $wrikeTimeFormatted = "{$hours}:{$formatedMinutes}";
 
         return json_encode([
-            'current' => $wrikeTimeFormatted,
+            'current' => $timeSpentTotal,
             'status' => 'ok',
             'updatedAt' => time(),
         ]);
