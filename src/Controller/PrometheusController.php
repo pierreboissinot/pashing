@@ -134,17 +134,17 @@ class PrometheusController extends AbstractController
         $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_closed_issues_total";
         $counter .= "# HELP {$metricName} The total number of closed issues.\n";
         $counter .= "# TYPE {$metricName} gauge\n";
-        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"closed issues\"} {$gitlabMetrics['closed_issues_total']}\n";
+        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"closed issues last 30 days\"} {$gitlabMetrics['closed_issues_total']}\n";
 
         $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_stale_issues_total";
         $counter .= "# HELP {$metricName} The total number of stale issues.\n";
         $counter .= "# TYPE {$metricName} gauge\n";
-        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"stale issues\"} {$gitlabMetrics['stale_issues_total']}\n";
+        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"stale issues last 60 days\"} {$gitlabMetrics['stale_issues_total']}\n";
 
         $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_new_issues_total";
         $counter .= "# HELP {$metricName} The total number of new issues.\n";
         $counter .= "# TYPE {$metricName} gauge\n";
-        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"new issues\"} {$gitlabMetrics['new_issues_total']}\n";
+        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"new issues last 30 days\"} {$gitlabMetrics['new_issues_total']}\n";
 
         $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_time_spent_hours";
         $counter .= "# HELP {$metricName} The total number of time spent in hours.\n";
