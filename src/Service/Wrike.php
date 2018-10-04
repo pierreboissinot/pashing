@@ -190,7 +190,7 @@ class Wrike
         ];
     }
 
-    public function getTimeSpentTotal(string $id)
+    public function getTimeSpentTotalLastThirtyDays(string $id)
     {
         $wrikeUrl = getenv('WRIKE_URL');
         $token = getenv('WRIKE_PERMANENT_TOKEN');
@@ -201,6 +201,36 @@ class Wrike
         ;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "${wrikeUrl}/api/v3/folders/${id}/timelogs?createdDate={\"start\":\"${thirtyDaysAgo}\"}");
+        //return the transfer as a string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer {$token}",
+            'Content-Type: application/json',
+        ]);
+        // $output contains the output string
+        $output = curl_exec($ch);
+        // close curl resource to free up system resources
+        curl_close($ch);
+        $timelogs = json_decode($output, true)['data'];
+        $sum = 0;
+        foreach ($timelogs as $timelog) {
+            $sum += $timelog['hours'];
+        }
+
+        return $sum;
+    }
+
+    public function getTimeSpentTotal(string $id)
+    {
+        $wrikeUrl = getenv('WRIKE_URL');
+        $token = getenv('WRIKE_PERMANENT_TOKEN');
+        $now = new DateTime();
+        $thirtyDaysAgo = $now
+            ->sub(new DateInterval('P30D'))
+            ->format('Y-m-d\TH:i:s\Z')
+        ;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "${wrikeUrl}/api/v3/folders/${id}/timelogs");
         //return the transfer as a string
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [

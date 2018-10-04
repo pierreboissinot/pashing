@@ -19,7 +19,7 @@ class WrikeEventHandler implements Event
 
     public function update()
     {
-        $timeSpentTotal = $this->wrike->getTimeSpentTotal(getenv('WRIKE_FOLDER_ID'));
+        $timeSpentTotal = $this->wrike->getTimeSpentTotalLastThirtyDays(getenv('WRIKE_FOLDER_ID'));
 
         //wrike_time_formatted = "#{sum.round(2).to_s.split(".")[0]}:#{((Integer(sum.round(2).to_s.split(".")[1]) / 100.0) * 60).round}"
         $hours = (int) $timeSpentTotal;
