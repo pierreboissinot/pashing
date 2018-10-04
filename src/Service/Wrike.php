@@ -232,9 +232,7 @@ class Wrike
             "Authorization: Bearer {$token}",
             'Content-Type: application/json',
         ]);
-        // $output contains the output string
         $output = curl_exec($ch);
-        // close curl resource to free up system resources
         curl_close($ch);
         $timelogs = json_decode($output, true)['data'];
         $sum = 0;
