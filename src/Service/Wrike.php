@@ -224,11 +224,6 @@ class Wrike
     {
         $wrikeUrl = getenv('WRIKE_URL');
         $token = getenv('WRIKE_PERMANENT_TOKEN');
-        $now = new DateTime();
-        $thirtyDaysAgo = $now
-            ->sub(new DateInterval('P30D'))
-            ->format('Y-m-d\TH:i:s\Z')
-        ;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "${wrikeUrl}/api/v3/folders/${id}/timelogs");
         //return the transfer as a string
