@@ -149,7 +149,7 @@ class PrometheusController extends AbstractController
         $metricName = self::APPLICATION_PREFIX."{$gitlabProjectId}_time_spent_hours";
         $counter .= "# HELP {$metricName} The total number of time spent in hours.\n";
         $counter .= "# TYPE {$metricName} gauge\n";
-        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"time spent\"} {$this->wrike->getTimeSpentTotal(getenv('WRIKE_FOLDER_ID'))}\n";
+        $counter .= "{$metricName}{projectId=\"{$gitlabProjectId}\",label=\"time spent\"} {$this->wrike->getTimeSpentTotal(getenv('WRIKE_CPS_FOLDER_ID'))}\n";
 
         return new Response($counter, RESPONSE::HTTP_OK, [
             'Content-type: '.'text/plain; version=0.0.4',
