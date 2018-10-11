@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 services:
   prometheus:
     image: quay.io/prometheus/prometheus:latest
@@ -12,3 +12,33 @@ services:
     ports:
       - 3000:3000
     network_mode: host
+  test_app:
+    build:
+      context: ./
+      dockerfile: DockerFile
+    volumes:
+      - "./:/var/www/TEST_APP:cached"
+      - "~/.composer:/var/composer:cached"
+    environment:
+      PHP_IDE_CONFIG: serverName=test-app
+
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+  webserver:
+    image: nginx:alpine
+    container_name: pashing-webserver
+    working_dir: /application
+    volumes:
+      - .:/application
+      - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "9094:80"
+
+  php-fpm:
+    build: phpdocker/php-fpm
+    container_name: pashing-php-fpm
+    working_dir: /application
+    volumes:
+      - .:/application
+      - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
