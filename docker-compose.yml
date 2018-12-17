@@ -1,44 +1,49 @@
 version: '3.1'
+
 services:
-  prometheus:
-    image: quay.io/prometheus/prometheus:latest
-    ports:
-      - 9090:9090
-    volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
-    network_mode: host
-  grafana:
-    image: grafana/grafana
-    ports:
-      - 3000:3000
-    network_mode: host
-  test_app:
-    build:
-      context: ./
-      dockerfile: DockerFile
-    volumes:
-      - "./:/var/www/TEST_APP:cached"
-      - "~/.composer:/var/composer:cached"
-    environment:
-      PHP_IDE_CONFIG: serverName=test-app
+    php: &php-config
+        image: lephare/php:7.2
+        user: "1000:1000"
+        volumes:
+            - ./:/var/www/symfony
+            - $SSH_AUTH_SOCK:/ssh-auth.sock
+            - $HOME/.composer:/composer
+        networks:
+            - default
+            - memcached
+        environment:
+            SSH_AUTH_SOCK: /ssh-auth.sock
+            COMPOSER_HOME: /composer
 
-###############################################################################
-#                          Generated on phpdocker.io                          #
-###############################################################################
-  webserver:
-    image: nginx:alpine
-    container_name: pashing-webserver
-    working_dir: /application
-    volumes:
-      - .:/application
-      - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    ports:
-      - "9094:80"
+    yarn:
+        image: node:carbon
+        user: "1000:1000"
+        entrypoint: yarn
+        command: install
+        volumes:
+            - ./:/var/www/symfony
+        working_dir: /var/www/symfony
 
-  php-fpm:
-    build: phpdocker/php-fpm
-    container_name: pashing-php-fpm
-    working_dir: /application
-    volumes:
-      - .:/application
-      - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+    composer:
+        <<: *php-config
+        command: composer install
+
+    http:
+        image: lephare/apache:2.4
+        volumes:
+            - .:/var/www/symfony
+            - ./var/log/http:/var/log/apache2
+        networks:
+            - default
+            - http-proxy
+        environment:
+            VIRTUAL_HOST: pashing.${DOCKER_HOST_SUFFIX:-local}
+            DOCUMENT_ROOT: /var/www/symfony/public
+
+networks:
+    memcached:
+        external:
+            name: dev_memcached
+    http-proxy:
+        external:
+            name: dev_proxy
